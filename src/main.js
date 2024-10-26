@@ -5,7 +5,7 @@ import Toast, {useToast} from "vue-toastification";
 import "vue-toastification/dist/index.css";
 
 import './assets/css/main.css'
-import './assets/js/bootstrap.min.js'
+import 'bootstrap'
 
 const app = createApp(App)
 
