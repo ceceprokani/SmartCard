@@ -1,0 +1,35 @@
+@import './bootstrap.min.css';
+
+body {
+  font-family: 'Poppins';
+}
+
+.custom-rounded {
+    border-radius: 15px !important;
+}
+
+.custom-rounded-card-header {
+    border-top-left-radius: 15px !important;
+    border-top-right-radius: 15px !important;
+}
+
+.bg-black-50 {
+    background-color: #303030;
+}
+
+.btn-circle {
+    border-radius: 50%;
+}
+
+.btn-small {
+    width: 30px;
+    height: 30px;
+}
+
+
+/* Tablet: untuk layar dengan lebar minimal 768px */
+@media (min-width: 768px) {
+    .title-app {
+        font-size: 24px
+    }
+}
