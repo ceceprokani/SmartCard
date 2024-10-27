@@ -5,50 +5,63 @@
         <img src="@/assets/images/poker.png" class="me-3" style="width: 30px; height: 30px;">
         <div class="fw-bold title-app">REMI GAME</div>
       </div>
-      <button type="button" class="btn btn-secondary custom-rounded" data-bs-toggle="modal" data-bs-target="#addMember" @click="resetForm" v-if="listPlayer.length"><i class="mdi mdi-plus me-2"></i>ADD NEW PLAYER</button>
+      <button type="button" class="btn btn-secondary custom-rounded fw-bold" data-bs-toggle="modal" data-bs-target="#addMember" @click="resetForm" v-if="listPlayer.length"><i class="mdi mdi-plus me-2"></i>ADD NEW PLAYER</button>
     </div>
     <div class="my-3">&nbsp;</div>
-    <div class="row" v-if="listPlayer.length">
-      <div class="col-xl-3 mb-3" v-for="player, index in listPlayer">
-        <div class="card custom-rounded border-0 bg-secondary">
-          <div class="card-header custom-rounded-card-header border-bottom-0">
-            <div class="d-flex justify-content-between align-items-center py-2">
-              <div class="fs-3 fw-bold m-0" :class="{'text-warning': getWinner.player.id === player.id}">
-                <i class="mdi mdi-lightning-bolt" style="filter: drop-shadow(0px 4px 6px rgba(255, 193, 7, 1));" v-if="getWinner.player.id === player.id"></i>
-                {{ player.name }}
-              </div>
-              <div class="fs-3 fw-bold m-0" :class="{'text-warning': getWinner.player.id === player.id}">{{ allPoint(player) }} <span class="fs-6">pts</span></div>
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center border-dark py-2" v-for="item in player.points">
-              <div class="text-dark fw-bold text-capitalize">{{ item.type }}</div>
-              <div class="d-flex align-items-center custom-rounded bg-dark py-2 px-3">
-                <div class="fs-5 fw-bold">{{ item.point }}</div>
-                <div class="border-start border-secondary ms-3">&nbsp;</div>
-                <button type="button" class="btn btn-link btn-small btn-circle ms-2 p-0 m-0"><i class="mdi mdi-trash-can text-secondary"></i></button>
+    <div v-if="fetching" class="d-flex align-items-center justify-content-center h-75">
+      <div class="d-block text-center">
+        <img src="@/assets/images/ripples.svg" class="mb-3" style="width: 100px;">
+        <div>LOADING ...</div>
+      </div>
+    </div>
+    <template v-else>
+      <div class="row" v-if="listPlayer.length">
+        <div class="col-xl-3 mb-3" v-for="player, index in listPlayer">
+          <div class="card custom-rounded border-0 bg-secondary player">
+            <div class="card-header custom-rounded-card-header border-bottom-0">
+              <div class="d-flex justify-content-between align-items-center py-2">
+                <div class="fs-3 fw-bold m-0" :class="{'text-warning': getWinner.player?.id === player.id}">
+                  <i class="mdi mdi-lightning-bolt" style="filter: drop-shadow(0px 4px 6px rgba(255, 193, 7, 1));" v-if="getWinner.player?.id === player.id"></i>
+                  {{ player.name }}
+                </div>
+                <div class="fs-3 fw-bold m-0" :class="{'text-warning': getWinner.player?.id === player.id}">{{ allPoint(player) }} <span class="fs-6">pts</span></div>
               </div>
             </div>
-          </div>
-          <div class="card-footer">
-            <div class="d-flex justify-content-between py-2">
-              <input type="number" class="form-control me-2 custom-rounded bg-dark border-secondary text-white fs-6" placeholder="Enter point..." />
-              <button type="button" class="btn btn-dark custom-rounded fw-bold">SAVE</button>
+            <div class="card-body">
+              <template v-if="player.points">
+                <div class="d-flex justify-content-between align-items-center border-dark py-2" v-for="item in player.points">
+                  <div class="text-dark fw-bold text-capitalize">{{ item.type }}</div>
+                  <div class="d-flex align-items-center custom-rounded bg-dark py-2 px-3">
+                    <div class="fs-5 fw-bold">{{ item.score }}</div>
+                    <div class="border-start border-secondary ms-3">&nbsp;</div>
+                    <button type="button" class="btn btn-link btn-small btn-circle ms-2 p-0 m-0" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmRemoveScore(item)"><i class="mdi mdi-trash-can text-secondary"></i></button>
+                  </div>
+                </div>
+              </template>
+              <div v-else class="text-dark py-3" style="font-size:14px">
+                Belum ada score yang masuk saat ini
+              </div>
             </div>
-            <button type="button" class="btn btn-secondary w-100 border border-dark text-dark custom-rounded fw-bold" @click="kickPlayer(index)">KICK PLAYER</button>
+            <div class="card-footer">
+              <div class="d-flex justify-content-between py-2">
+                <input type="number" class="form-control me-2 custom-rounded bg-dark border-secondary text-white fs-6" placeholder="Enter point..." v-model="player.score" />
+                <button type="button" class="btn btn-dark custom-rounded fw-bold" v-if="player.score" @click="saveScore(player.id, player.score)">ADD</button>
+              </div>
+              <button type="button" class="btn btn-secondary w-100 border border-dark text-dark custom-rounded fw-bold show-hover" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmKickPlayer(player)">KICK PLAYER</button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="row h-75 align-items-center" v-else>
-      <div class="col-md-12 text-center">
-        <img src="@/assets/images/empty-inbox.png" style="width: 150px;" class="img-fluid mb-3">
-        <div class="text-muted">Belum ada pemain untuk saat ini.</div>
-        <div class="text-muted mb-4">Silahkan tentukan para pemain terlebih dahulu</div>
+      <div class="row h-75 align-items-center" v-else>
+        <div class="col-md-12 text-center">
+          <img src="@/assets/images/empty-inbox.png" style="width: 150px;" class="img-fluid mb-3">
+          <div class="text-muted">Belum ada pemain untuk saat ini.</div>
+          <div class="text-muted mb-4">Silahkan tentukan para pemain terlebih dahulu</div>
 
-        <button class="btn btn-secondary p-3 custom-rounded" data-bs-toggle="modal" data-bs-target="#addMember" @click="resetForm"><i class="mdi mdi-plus me-2"></i>ADD NEW PLAYER</button>
+          <button class="btn btn-secondary p-3 custom-rounded" data-bs-toggle="modal" data-bs-target="#addMember" @click="resetForm"><i class="mdi mdi-plus me-2"></i>ADD NEW PLAYER</button>
+        </div>
       </div>
-    </div>
+    </template>
   </div>
 
   <!-- Modal -->
@@ -75,9 +88,29 @@
       </div>
     </div>
   </div>
+  <!-- Modal -->
+  <div class="modal fade" id="confirm" tabindex="-1" aria-labelledby="confirmLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content custom-rounded bg-dark">
+        <div class="modal-header border-0">
+          <h5 class="modal-title text-white" id="confirmLabel">{{ confirmMessage.title }}</h5>
+        </div>
+        <div class="modal-body">
+          <div class="mb-2 text-white" v-html="confirmMessage.message"></div>
+        </div>
+        <div class="modal-footer border-0">
+          <button type="button" ref="closeModalConfirm" class="btn btn-link text-white text-decoration-none custom-rounded" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-secondary custom-rounded" @click="actionConfirm(confirmMessage.action)">{{ confirmMessage.action_title }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 <script>
 import { max, findIndex } from 'lodash';
+
+import { db } from '@/utils/firebase';
+import { doc, setDoc, getDocs, addDoc, collection, where, deleteDoc, query } from "firebase/firestore";
 
 export default {
   data() {
@@ -86,7 +119,16 @@ export default {
       form: {
         name: '',
         point: ''
-      }
+      },
+      detailPlayer: {},
+      fetching: false,
+      confirmMessage: {
+        title: '',
+        message: '',
+        action: '',
+        action_title: ''
+      },
+      detailScore: null
     }
   },
   computed: {
@@ -104,10 +146,12 @@ export default {
         tmpScore.push(this.calculatePoint(player))
       });
 
+      let playerHighScore = null
       result = max(tmpScore)
-      let findPlayerByHighScore = findIndex(tmpScore, (num) => num === result)
-      let playerHighScore = this.listPlayer[findPlayerByHighScore]
-      
+      if (result > 0) {
+        let findPlayerByHighScore = findIndex(tmpScore, (num) => num === result)
+        playerHighScore = this.listPlayer[findPlayerByHighScore]
+      }
       
       return {
         'score': result,
@@ -116,176 +160,199 @@ export default {
     }
   },
   mounted() {
-    this.listPlayer = [
-        {
-          id: 1,
-          name: 'CAU',
-          points: [
-            {
-              type: 'plus',
-              point: 50,
-            },
-            {
-              type: 'plus',
-              point: 55,
-            },
-            {
-              type: 'plus',
-              point: 160,
-            },
-            {
-              type: 'plus',
-              point: 80,
-            },
-            {
-              type: 'plus',
-              point: 77,
-            },
-            {
-              type: 'plus',
-              point: 90,
-            }
-          ]
-        },
-        {
-          id: 2,
-          name: 'AZIZ',
-          points: [
-            {
-              type: 'plus',
-              point: 88,
-            },
-            {
-              type: 'plus',
-              point: 33,
-            },
-            {
-              type: 'min',
-              point: 88,
-            },
-            {
-              type: 'min',
-              point: 80,
-            },
-            {
-              type: 'plus',
-              point: 77,
-            },
-            {
-              type: 'plus',
-              point: 160,
-            }
-          ]
-        },
-        {
-          id: 3,
-          name: 'DONI',
-          points: [
-            {
-              type: 'plus',
-              point: 150,
-            },
-            {
-              type: 'plus',
-              point: 66,
-            },
-            {
-              type: 'min',
-              point: 22,
-            },
-            {
-              type: 'min',
-              point: 80,
-            },
-            {
-              type: 'plus',
-              point: 200,
-            },
-            {
-              type: 'plus',
-              point: 250,
-            }
-          ]
-        },
-        {
-          id: 4,
-          name: 'YUSRON',
-          points: [
-            {
-              type: 'plus',
-              point: 55,
-            },
-            {
-              type: 'plus',
-              point: 33,
-            },
-            {
-              type: 'min',
-              point: 22,
-            },
-            {
-              type: 'min',
-              point: 80,
-            },
-            {
-              type: 'plus',
-              point: 150,
-            },
-            {
-              type: 'plus',
-              point: 100,
-            }
-          ]
-        }
-      ]
+    this.fetchData()
+    // this.listPlayer = [
+    //     {
+    //       id: 1,
+    //       name: 'CAU',
+    //       points: [
+    //         {
+    //           type: 'plus',
+    //           point: 50,
+    //         },
+    //         {
+    //           type: 'plus',
+    //           point: 55,
+    //         },
+    //         {
+    //           type: 'plus',
+    //           point: 160,
+    //         },
+    //         {
+    //           type: 'plus',
+    //           point: 80,
+    //         },
+    //         {
+    //           type: 'plus',
+    //           point: 77,
+    //         },
+    //         {
+    //           type: 'plus',
+    //           point: 90,
+    //         }
+    //       ]
+    //     },
+    //     {
+    //       id: 2,
+    //       name: 'AZIZ',
+    //       points: [
+    //         {
+    //           type: 'plus',
+    //           point: 88,
+    //         },
+    //         {
+    //           type: 'plus',
+    //           point: 33,
+    //         },
+    //         {
+    //           type: 'min',
+    //           point: 88,
+    //         },
+    //         {
+    //           type: 'min',
+    //           point: 80,
+    //         },
+    //         {
+    //           type: 'plus',
+    //           point: 77,
+    //         },
+    //         {
+    //           type: 'plus',
+    //           point: 160,
+    //         }
+    //       ]
+    //     },
+    //     {
+    //       id: 3,
+    //       name: 'DONI',
+    //       points: [
+    //         {
+    //           type: 'plus',
+    //           point: 150,
+    //         },
+    //         {
+    //           type: 'plus',
+    //           point: 66,
+    //         },
+    //         {
+    //           type: 'min',
+    //           point: 22,
+    //         },
+    //         {
+    //           type: 'min',
+    //           point: 80,
+    //         },
+    //         {
+    //           type: 'plus',
+    //           point: 200,
+    //         },
+    //         {
+    //           type: 'plus',
+    //           point: 250,
+    //         }
+    //       ]
+    //     },
+    //     {
+    //       id: 4,
+    //       name: 'YUSRON',
+    //       points: [
+    //         {
+    //           type: 'plus',
+    //           point: 55,
+    //         },
+    //         {
+    //           type: 'plus',
+    //           point: 33,
+    //         },
+    //         {
+    //           type: 'min',
+    //           point: 22,
+    //         },
+    //         {
+    //           type: 'min',
+    //           point: 80,
+    //         },
+    //         {
+    //           type: 'plus',
+    //           point: 150,
+    //         },
+    //         {
+    //           type: 'plus',
+    //           point: 100,
+    //         }
+    //       ]
+    //     }
+    //   ]
   },
   methods: {
+    async fetchData() {
+      try {
+        this.fetching = true
+        this.listPlayer = []
+        let tmpAllPlayer = []
+
+        // get data player
+        const querySnapshot = await getDocs(collection(db, "player"));
+        querySnapshot.forEach((doc) => {
+          tmpAllPlayer.push({ id: doc.id, ...doc.data() });
+        });
+
+        let listScorePlayer = []
+        // Ambil data score
+        const scoreSnapshot = await getDocs(collection(db, "score"), where("createdAt", "==", new Date()));        
+        listScorePlayer = scoreSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        // Gabungkan data berdasarkan userId
+        this.listPlayer = tmpAllPlayer.map((player) => {
+          const score = listScorePlayer
+                      .map((dataScore) => ({
+                        type: dataScore.score < 0 ? 'Min' : 'Plus',
+                        ...dataScore,
+                        score: parseInt(dataScore.score.toString().replace('-', ''))
+                      }))
+                      .filter((score) => score.userId === player.id)
+                      .sort((a, b) => a.createdAt - b.createdAt);
+          return {
+            ...player,
+            points: score
+          };
+        });
+
+        this.fetching = false
+      } catch (error) {
+        this.fetching = false
+      }
+    },
     calculatePoint(data) {
       let result = 0
-      data.points.forEach(element => {
-        if (element.type == 'plus')
-          result += element.point
-        else
-          result -= element.point
-      });
+
+      if (data.points?.length) {
+        data.points.forEach(element => {
+          if (element.type.toLowerCase() == 'plus')
+            result += element.score
+          else
+            result -= element.score
+        });
+      }
 
       return result
     },
-    saveMember() {
-      this.listPlayer.push(
-        {
-          id: this.listPlayer.length + 1,
+    async saveMember() {
+      const process = await addDoc(collection(db, "player"), {
           name: this.form.name,
-          points: [
-            {
-              type: 'plus',
-              point: 50,
-            },
-            {
-              type: 'plus',
-              point: 55,
-            },
-            {
-              type: 'plus',
-              point: 160,
-            },
-            {
-              type: 'plus',
-              point: 80,
-            },
-            {
-              type: 'plus',
-              point: 77,
-            },
-            {
-              type: 'plus',
-              point: 90,
-            }
-          ]
-        }
-      )
-      this.$refs.closeModal.click()
-      this.$toast.success('Data saved successfully!');
+          point: this.form.point,
+      });
+
+      if (process.id) {
+        this.$refs.closeModal.click()
+        this.fetchData()
+        this.$toast.success('Data saved successfully!');
+      } else {
+        this.$toast.error('Data saved failed!');
+      }
     },
     resetForm() {
       this.form = {
@@ -293,12 +360,85 @@ export default {
         point: ''
       }
     },
-    kickPlayer(index) {
-      this.listPlayer.splice(index, 1)
+    async kickPlayer(id) {
+      const playerRef = doc(db, "player", id);
+      await deleteDoc(playerRef);
+      
+      const buildQuery = query(collection(db, "score"),
+        where("userId", "==", id),
+      );
+
+      const scoreSnapshot = await getDocs(buildQuery);
+
+      const deletePromises = scoreSnapshot.docs.map((document) => deleteDoc(doc(db, "score", document.id)));
+      await Promise.all(deletePromises);
+
+      this.$refs.closeModalConfirm.click()
+      this.fetchData()
     },
-    removeScore() {
+    async removeScore(id) {
+      try {
+        const scoreRef = doc(db, "score", id);
+        await deleteDoc(scoreRef);
+
+        this.$refs.closeModalConfirm.click()
+        this.fetchData()
+        this.$toast.success('Data deleted successfully!');
+      } catch (error) {
+        this.$toast.error('Data deleted failed!');
+      }
     },
-    addScore() {
+    async saveScore(userId, score, id=null) {
+      let process = false
+      if (id) {
+        process = await setDoc(doc(db, "score", id), {
+          userId: userId,
+          score: score,
+          createdAt: new Date()
+        });
+      } else {
+        process = await addDoc(collection(db, "score"), {
+          userId: userId,
+          score: score,
+          createdAt: new Date()
+        });
+      }
+
+      if (process) {
+        this.fetchData()
+        this.$toast.success('Data saved successfully!');
+      } else {
+        this.$toast.error('Data saved failed!');
+      }
+    },
+    confirmKickPlayer(data) {
+      this.confirmMessage = {
+        title: 'Kick Pemain',
+        message: `Apakah kamu yakin akan mengeluarkan pemain dengan Nama <span class="text-decoration-underline fw-bold fs-5">${data.name}</span> ?`,
+        action: 'kick-player',
+        action_title: 'Kick This Player'
+      }
+      this.detailPlayer = data
+    },
+    confirmRemoveScore(score) {
+      this.confirmMessage = {
+        title: 'Remove Score',
+        message: `Apakah kamu yakin akan menghapus skor ini ?`,
+        action: 'remove-score',
+        action_title: 'Remove Score'
+      }
+      this.detailScore = score
+    },
+    actionConfirm(action) {
+      switch (action) {
+        case 'kick-player':
+          this.kickPlayer(this.detailPlayer.id)
+          break;
+        case 'remove-score':
+          this.removeScore(this.detailScore.id)
+        default:
+          break;
+      }
     }
   }
 }

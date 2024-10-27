@@ -26,6 +26,28 @@ body {
     height: 30px;
 }
 
+/* Untuk Chrome, Safari, Edge, dan Opera */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Untuk Firefox */
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.player .show-hover {
+    display: none;
+    transition: opacity 0.3s ease, visibility 0.3s ease; /* Efek transisi */
+}
+
+.player:hover .show-hover {
+    display: block; /* Tampilkan elemen saat parent di-hover */
+    opacity: 1; /* Ubah opacity untuk efek fade-in */
+    visibility: visible;
+}
 
 /* Tablet: untuk layar dengan lebar minimal 768px */
 @media (min-width: 768px) {
