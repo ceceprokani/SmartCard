@@ -35,9 +35,9 @@
                     <div class="border-start" style="border-color: #404040 !important;">&nbsp;</div>
                     <div class="fw-bold text-capitalize ms-3" style="font-size: 10pt">{{ item.type }}</div>
                   </div>
-                  <div class="fs-4 fw-bold me-3" :style="{'color': item.type.toLowerCase() == 'plus' ? '#F3C623' : '#F05A7E'}">
+                  <div class="fs-4 fw-bold me-3" :style="{'color': item.type.toLowerCase() == '-' ? 'white' : item.type.toLowerCase() == 'plus' ? '#F3C623' : '#F05A7E'}">
                     <i class="mdi mdi-arrow-top-right" v-if="item.type.toLowerCase() == 'plus'"></i>
-                    <i class="mdi mdi-arrow-bottom-left" v-else></i>
+                    <i class="mdi mdi-arrow-bottom-left" v-if="item.type.toLowerCase() == 'minus'"></i>
                     {{ item.score }}</div>
                 </div>
               </template>
@@ -145,7 +145,7 @@
 import { max, findIndex } from 'lodash';
 
 import { db } from '@/utils/firebase';
-import { doc, setDoc, getDocs, addDoc, collection, where, deleteDoc, query } from "firebase/firestore";
+import { doc, setDoc, getDocs, addDoc, collection, where, deleteDoc, query, orderBy } from "firebase/firestore";
 
 export default {
   data() {
@@ -188,7 +188,6 @@ export default {
 
       let playerHighScore = null
       result = max(tmpScore)
-      console.log(result);
       
       if (result > 0) {
         let findPlayerByHighScore = findIndex(tmpScore, (num) => num === result)
@@ -212,7 +211,7 @@ export default {
         let tmpAllPlayer = []
 
         // get data player
-        const querySnapshot = await getDocs(collection(db, "player"));
+        const querySnapshot = await getDocs(collection(db, "player"), orderBy("name", "asc"));
         querySnapshot.forEach((doc) => {
           tmpAllPlayer.push({ id: doc.id, ...doc.data() });
         });
@@ -229,7 +228,7 @@ export default {
         this.listPlayer = tmpAllPlayer.map((player) => {
           const score = listScorePlayer
                       .map((dataScore) => ({
-                        type: dataScore.score < 0 ? 'Minus' : 'Plus',
+                        type: dataScore.score < 0 ? 'Minus' : dataScore.score > 0 ? 'Plus' : '-',
                         ...dataScore,
                         score: parseInt(dataScore.score.toString().replace('-', ''))
                       }))
