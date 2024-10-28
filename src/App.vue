@@ -24,15 +24,15 @@
                   <i class="mdi mdi-lightning-bolt" style="filter: drop-shadow(0px 4px 6px rgba(255, 193, 7, 1));" v-if="getWinner.player?.id === player.id"></i>
                   {{ player.name }}
                 </div>
-                <div class="fs-3 fw-bold m-0" :class="{'text-warning': getWinner.player?.id === player.id}">{{ allPoint(player) }} <span class="fs-6">pts</span></div>
+                <div class="fs-3 fw-bold m-0" :class="{'text-warning': getWinner.player?.id === player.id}" :style="{'color': allPoint(player) < 0 ? '#FFB38E' : 'white'}">{{ allPoint(player) }} <span class="fs-6">pts</span></div>
               </div>
             </div>
             <div class="card-body">
               <template v-if="player.points">
                 <div class="d-flex justify-content-between align-items-center border-dark py-2" v-for="item in player.points">
-                  <div class="text-dark fw-bold text-capitalize">{{ item.type }}</div>
+                  <div class="fw-bold text-capitalize">{{ item.type }}</div>
                   <div class="d-flex align-items-center custom-rounded bg-dark py-2 px-3">
-                    <div class="fs-5 fw-bold">{{ item.score }}</div>
+                    <div class="fs-5 fw-bold" :style="{'color': item.type.toLowerCase() == 'plus' ? '#06D001' : '#FD5D5D'}">{{ item.score }}</div>
                     <div class="border-start border-secondary ms-3">&nbsp;</div>
                     <button type="button" class="btn btn-link btn-small btn-circle ms-2 p-0 m-0" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmRemoveScore(item)"><i class="mdi mdi-trash-can text-secondary"></i></button>
                   </div>
@@ -148,10 +148,12 @@ export default {
 
       let playerHighScore = null
       result = max(tmpScore)
-      if (result > 0) {
+      console.log(result);
+      
+      // if (result > 0) {
         let findPlayerByHighScore = findIndex(tmpScore, (num) => num === result)
         playerHighScore = this.listPlayer[findPlayerByHighScore]
-      }
+      // }
       
       return {
         'score': result,
@@ -161,128 +163,6 @@ export default {
   },
   mounted() {
     this.fetchData()
-    // this.listPlayer = [
-    //     {
-    //       id: 1,
-    //       name: 'CAU',
-    //       points: [
-    //         {
-    //           type: 'plus',
-    //           point: 50,
-    //         },
-    //         {
-    //           type: 'plus',
-    //           point: 55,
-    //         },
-    //         {
-    //           type: 'plus',
-    //           point: 160,
-    //         },
-    //         {
-    //           type: 'plus',
-    //           point: 80,
-    //         },
-    //         {
-    //           type: 'plus',
-    //           point: 77,
-    //         },
-    //         {
-    //           type: 'plus',
-    //           point: 90,
-    //         }
-    //       ]
-    //     },
-    //     {
-    //       id: 2,
-    //       name: 'AZIZ',
-    //       points: [
-    //         {
-    //           type: 'plus',
-    //           point: 88,
-    //         },
-    //         {
-    //           type: 'plus',
-    //           point: 33,
-    //         },
-    //         {
-    //           type: 'min',
-    //           point: 88,
-    //         },
-    //         {
-    //           type: 'min',
-    //           point: 80,
-    //         },
-    //         {
-    //           type: 'plus',
-    //           point: 77,
-    //         },
-    //         {
-    //           type: 'plus',
-    //           point: 160,
-    //         }
-    //       ]
-    //     },
-    //     {
-    //       id: 3,
-    //       name: 'DONI',
-    //       points: [
-    //         {
-    //           type: 'plus',
-    //           point: 150,
-    //         },
-    //         {
-    //           type: 'plus',
-    //           point: 66,
-    //         },
-    //         {
-    //           type: 'min',
-    //           point: 22,
-    //         },
-    //         {
-    //           type: 'min',
-    //           point: 80,
-    //         },
-    //         {
-    //           type: 'plus',
-    //           point: 200,
-    //         },
-    //         {
-    //           type: 'plus',
-    //           point: 250,
-    //         }
-    //       ]
-    //     },
-    //     {
-    //       id: 4,
-    //       name: 'YUSRON',
-    //       points: [
-    //         {
-    //           type: 'plus',
-    //           point: 55,
-    //         },
-    //         {
-    //           type: 'plus',
-    //           point: 33,
-    //         },
-    //         {
-    //           type: 'min',
-    //           point: 22,
-    //         },
-    //         {
-    //           type: 'min',
-    //           point: 80,
-    //         },
-    //         {
-    //           type: 'plus',
-    //           point: 150,
-    //         },
-    //         {
-    //           type: 'plus',
-    //           point: 100,
-    //         }
-    //       ]
-    //     }
-    //   ]
   },
   methods: {
     async fetchData() {
