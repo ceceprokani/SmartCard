@@ -24,11 +24,11 @@
                   <i class="mdi mdi-lightning-bolt" style="filter: drop-shadow(0px 4px 6px rgba(255, 193, 7, 1));" v-if="getWinner.player?.id === player.id"></i>
                   {{ player.name }}
                 </div>
-                <div class="fs-3 fw-bold m-0" :class="{'text-warning': getWinner.player?.id === player.id}" :style="{'color': allPoint(player) < 0 ? '#F05A7E' : 'white'}">{{ allPoint(player) }} <span class="fs-6">pts</span></div>
+                <div class="fs-3 fw-bold m-0" :class="{'text-warning': getWinner.player?.id === player.id}" :style="{'color': allPoint(player) < 0 ? '#CC2B52' : 'white'}">{{ allPoint(player) }} <span class="fs-6">pts</span></div>
               </div>
             </div>
             <div class="card-body">
-              <template v-if="player.points">
+              <template v-if="player.points.length">
                 <div class="d-flex custom-rounded bg-dark justify-content-between align-items-center border-dark py-1 mb-2" v-for="item in player.points">
                   <div class="d-flex p-0 align-items-center">
                     <button type="button" class="btn btn-link btn-small btn-circle ms-2 p-0 m-2" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmRemoveScore(item)"><i class="mdi mdi-trash-can text-secondary"></i></button>
@@ -46,12 +46,13 @@
               </div>
             </div>
             <div class="card-footer">
-              <div class="d-flex justify-content-between py-2">
+              <div class="d-none d-flex justify-content-between py-2">
                 <input type="number" class="form-control custom-rounded bg-dark border-secondary text-white fs-6" placeholder="Enter point..." v-model="player.score" />
                 <button type="button" class="btn btn-dark custom-rounded fw-bold ms-2" v-if="player.score" @click="saveScore(player.id, player.score)">ADD</button>
               </div>
-              <div class="d-grid">
-                <button type="button" class="btn btn-secondary border border-dark text-dark custom-rounded fw-bold show-hover" style="border-color: #505050 !important;" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmKickPlayer(player)">KICK PLAYER</button>
+              <div class="d-grid pt-2">
+                <button type="button" class="btn btn-warning custom-rounded fw-bold show-hover mb-2" data-bs-toggle="modal" data-bs-target="#formScore" @click="openFormScore(player)">ADD SCORE</button>
+                <button type="button" class="btn btn-secondary text-dark custom-rounded fw-bold show-hover" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmKickPlayer(player)">KICK PLAYER</button>
               </div>
             </div>
           </div>
@@ -89,6 +90,35 @@
         <div class="modal-footer border-0">
           <button type="button" ref="closeModal" class="btn btn-link text-white text-decoration-none custom-rounded" data-bs-dismiss="modal">Close</button>
           <button type="button" class="btn btn-secondary custom-rounded" @click="saveMember">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="formScore" tabindex="-1" aria-labelledby="formScoreLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content custom-rounded bg-dark">
+        <div class="modal-header border-0">
+          <h5 class="modal-title text-white" id="formScoreLabel">Tambah Pemain Baru</h5>
+        </div>
+        <div class="modal-body">
+          <div class="form-group row text-white mb-3">
+            <div class="col-md-6">
+              <label class="form-label mb-2">Nilai Min</label>
+              <input type="text" v-model="formScore.min" @input="calculcateScore" class="form-control custom-rounded bg-dark border-secondary text-white fs-6" placeholder="Enter minus score" />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label mb-2">Nilai Plus</label>
+              <input type="text" v-model="formScore.plus" @input="calculcateScore" class="form-control custom-rounded bg-dark border-secondary text-white fs-6" placeholder="Enter plus score" />
+            </div>
+          </div>
+          <div class="form-group text-white mb-3">
+            <label class="form-label mb-2">Total Nilai</label>
+            <input type="text" v-model="formScore.total" class="form-control custom-rounded bg-dark border-secondary text-white fs-6" placeholder="Enter name of player..." />
+          </div>
+        </div>
+        <div class="modal-footer border-0">
+          <button type="button" ref="closeModalScore" class="btn btn-link text-white text-decoration-none custom-rounded" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn custom-rounded" :class="{'btn-warning fw-bold': formScore.total, 'btn-secondary': !formScore.total}" :disabled="!formScore.total" @click="saveScore(detailPlayer.id, formScore.total)">Save changes</button>
         </div>
       </div>
     </div>
@@ -132,6 +162,11 @@ export default {
         message: '',
         action: '',
         action_title: ''
+      },
+      formScore: {
+        min: '',
+        plus: '',
+        total: ''
       },
       detailScore: null
     }
@@ -194,7 +229,7 @@ export default {
         this.listPlayer = tmpAllPlayer.map((player) => {
           const score = listScorePlayer
                       .map((dataScore) => ({
-                        type: dataScore.score < 0 ? 'Min' : 'Plus',
+                        type: dataScore.score < 0 ? 'Minus' : 'Plus',
                         ...dataScore,
                         score: parseInt(dataScore.score.toString().replace('-', ''))
                       }))
@@ -290,6 +325,7 @@ export default {
       }
 
       if (process) {
+        this.$refs.closeModalScore.click()
         this.fetchData()
         this.$toast.success('Data saved successfully!');
       } else {
@@ -323,6 +359,25 @@ export default {
           this.removeScore(this.detailScore.id)
         default:
           break;
+      }
+    },
+    calculcateScore() {
+      let result = 0
+
+      if (this.formScore.min >= 0) {
+        result -= parseInt(this.formScore.min) || 0
+      } if (this.formScore.plus >= 0) {
+        result += parseInt(this.formScore.plus) || 0
+      }
+
+      this.formScore.total = result
+    },
+    openFormScore(data) {
+      this.detailPlayer = data
+      this.formScore = {
+        min: '',
+        plus: '',
+        total: ''
       }
     }
   }
