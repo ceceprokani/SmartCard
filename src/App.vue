@@ -113,7 +113,7 @@
           </div>
           <div class="form-group text-white mb-3">
             <label class="form-label mb-2">Total Nilai</label>
-            <input type="text" v-model="formScore.total" class="form-control custom-rounded bg-dark border-secondary text-white fs-6" placeholder="Enter name of player..." />
+            <input type="text" v-model="formScore.total" class="form-control custom-rounded bg-dark border-secondary text-white fs-6" placeholder="Enter total of score ..." />
           </div>
         </div>
         <div class="modal-footer border-0">
