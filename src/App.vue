@@ -1,11 +1,11 @@
 <template>
   <div class="container p-3 text-white vh-100">
     <div class="d-flex my-3 justify-content-between">
-      <div class="d-flex align-items-center">
+      <div class="d-flex align-items-center text-warning">
         <img src="@/assets/images/poker.png" class="me-3" style="width: 30px; height: 30px;">
         <div class="fw-bold title-app">REMI GAME</div>
       </div>
-      <button type="button" class="btn btn-secondary custom-rounded fw-bold" data-bs-toggle="modal" data-bs-target="#addMember" @click="resetForm" v-if="listPlayer.length"><i class="mdi mdi-plus me-2"></i>ADD NEW PLAYER</button>
+      <button type="button" class="btn btn-warning custom-rounded fw-bold" data-bs-toggle="modal" data-bs-target="#addMember" @click="resetForm" v-if="listPlayer.length"><i class="mdi mdi-plus me-2"></i>ADD NEW PLAYER</button>
     </div>
     <div class="my-3">&nbsp;</div>
     <div v-if="fetching" class="d-flex align-items-center justify-content-center h-75">
@@ -64,7 +64,7 @@
           <div class="text-muted">Belum ada pemain untuk saat ini.</div>
           <div class="text-muted mb-4">Silahkan tentukan para pemain terlebih dahulu</div>
 
-          <button class="btn btn-secondary p-3 custom-rounded" data-bs-toggle="modal" data-bs-target="#addMember" @click="resetForm"><i class="mdi mdi-plus me-2"></i>ADD NEW PLAYER</button>
+          <button class="btn btn-warning p-3 custom-rounded" data-bs-toggle="modal" data-bs-target="#addMember" @click="resetForm"><i class="mdi mdi-plus me-2"></i>ADD NEW PLAYER</button>
         </div>
       </div>
     </template>
@@ -89,7 +89,7 @@
         </div>
         <div class="modal-footer border-0">
           <button type="button" ref="closeModal" class="btn btn-link text-white text-decoration-none custom-rounded" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-secondary custom-rounded" @click="saveMember">Save changes</button>
+          <button type="button" class="btn custom-rounded" :class="{'btn-secondary': !form.name, 'btn-warning fw-bold': form.name}" @click="saveMember">Save changes</button>
         </div>
       </div>
     </div>
