@@ -18,13 +18,13 @@
       <div class="row" v-if="listPlayer.length">
         <div class="col-xl-3 mb-3" v-for="player, index in listPlayer">
           <div class="card custom-rounded border-0 bg-secondary player">
-            <div class="card-header custom-rounded-card-header" :class="{'bg-danger': allPoint(player) < 0}">
+            <div class="card-header custom-rounded-card-header" :class="{'bg-danger': allPoint(player) < 0, 'bg-warning': getWinner.player?.id === player.id}">
               <div class="d-flex justify-content-between align-items-center py-2">
-                <div class="fs-3 fw-bold m-0" :class="{'text-warning': getWinner.player?.id === player.id}">
-                  <i class="mdi mdi-lightning-bolt" style="filter: drop-shadow(0px 4px 6px rgba(255, 193, 7, 1));" v-if="getWinner.player?.id === player.id"></i>
+                <div class="fs-3 fw-bold m-0">
+                  <i class="mdi mdi-lightning-bolt" style="filter: drop-shadow(0px 2px 4px rgba(255, 255, 255, 1));" v-if="getWinner.player?.id === player.id"></i>
                   {{ player.name }}
                 </div>
-                <div class="fs-3 fw-bold m-0" :class="{'text-warning': getWinner.player?.id === player.id}" :style="{'color': allPoint(player) < 0 ? 'white' : 'white'}">{{ allPoint(player) }} <span class="fs-6">pts</span></div>
+                <div class="fs-3 fw-bold m-0" :style="{'color': allPoint(player) < 0 ? 'white' : 'white'}">{{ allPoint(player) }} <span class="fs-6">pts</span></div>
               </div>
             </div>
             <div class="card-body">
