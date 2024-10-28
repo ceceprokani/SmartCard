@@ -1,7 +1,24 @@
-# Vue 3 + Vite
+# Aplikasi Ceki: Main Kartu Jadi Lebih Seru! 🃏
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Halo, guys! Siapa yang suka maen Ceki? Sekarang, kamu bisa nikmatin permainan ini dengan cara yang lebih praktis lewat aplikasi kita! 
 
-## Recommended IDE Setup
+## Fitur Keren yang Bikin Makin Asyik:
 
-- [VS Code](https://code.visualstudio.com/) + [Vue - Official](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (previously Volar) and disable Vetur
+- **Tambah Pemain Gampang**: Mau maen bareng teman? Tinggal tambahin aja, siap-siap seru-seruan!
+- **Hitung Nilai Otomatis**: Bye-bye ribet! Setiap nilai plus dan minus dihitung otomatis, jadi kamu tinggal fokus buat menang.
+- **Tampilkan Pemain dengan Nilai Tertinggi**: Lihat siapa yang lagi unggul di antara teman-temanmu. Siapa tahu kamu yang jadi juara!
+
+## Cara Mainnya Gimana?
+
+1. **Buka Aplikasi**: Langsung cek [link ini](https://smart-card-theta.vercel.app/).
+2. **Tambah Pemain**: Klik untuk nambahin teman-temanmu.
+3. **Ayo Main**: Ikuti instruksi di layar dan nikmatin keseruannya!
+4. **Cek Skor**: Skor akan diperbarui otomatis, jadi tinggal lihat siapa yang terbaik!
+
+## Kontribusi
+
+Kalau kamu mau berkontribusi atau punya saran, feel free untuk bikin pull request atau buka isu.
+
+## Lisensi
+
+Aplikasi ini dilisensikan di bawah [MIT License](LICENSE).
