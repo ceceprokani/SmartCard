@@ -18,7 +18,7 @@
       <div class="row" v-if="listPlayer.length">
         <div class="col-xl-3 mb-3" v-for="player, index in listPlayer">
           <div class="card custom-rounded border-0 bg-secondary player">
-            <div class="card-header custom-rounded-card-header border-bottom-0">
+            <div class="card-header custom-rounded-card-header">
               <div class="d-flex justify-content-between align-items-center py-2">
                 <div class="fs-3 fw-bold m-0" :class="{'text-warning': getWinner.player?.id === player.id}">
                   <i class="mdi mdi-lightning-bolt" style="filter: drop-shadow(0px 4px 6px rgba(255, 193, 7, 1));" v-if="getWinner.player?.id === player.id"></i>
@@ -47,10 +47,12 @@
             </div>
             <div class="card-footer">
               <div class="d-flex justify-content-between py-2">
-                <input type="number" class="form-control me-2 custom-rounded bg-dark border-secondary text-white fs-6" placeholder="Enter point..." v-model="player.score" />
-                <button type="button" class="btn btn-dark custom-rounded fw-bold" v-if="player.score" @click="saveScore(player.id, player.score)">ADD</button>
+                <input type="number" class="form-control custom-rounded bg-dark border-secondary text-white fs-6" placeholder="Enter point..." v-model="player.score" />
+                <button type="button" class="btn btn-dark custom-rounded fw-bold ms-2" v-if="player.score" @click="saveScore(player.id, player.score)">ADD</button>
               </div>
-              <button type="button" class="btn btn-secondary w-100 border border-dark text-dark custom-rounded fw-bold show-hover" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmKickPlayer(player)">KICK PLAYER</button>
+              <div class="d-grid">
+                <button type="button" class="btn btn-secondary border border-dark text-dark custom-rounded fw-bold show-hover" style="border-color: #505050 !important;" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmKickPlayer(player)">KICK PLAYER</button>
+              </div>
             </div>
           </div>
         </div>
