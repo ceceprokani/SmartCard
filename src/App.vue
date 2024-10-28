@@ -24,18 +24,21 @@
                   <i class="mdi mdi-lightning-bolt" style="filter: drop-shadow(0px 4px 6px rgba(255, 193, 7, 1));" v-if="getWinner.player?.id === player.id"></i>
                   {{ player.name }}
                 </div>
-                <div class="fs-3 fw-bold m-0" :class="{'text-warning': getWinner.player?.id === player.id}" :style="{'color': allPoint(player) < 0 ? '#DE7C7D' : 'white'}">{{ allPoint(player) }} <span class="fs-6">pts</span></div>
+                <div class="fs-3 fw-bold m-0" :class="{'text-warning': getWinner.player?.id === player.id}" :style="{'color': allPoint(player) < 0 ? '#F05A7E' : 'white'}">{{ allPoint(player) }} <span class="fs-6">pts</span></div>
               </div>
             </div>
             <div class="card-body">
               <template v-if="player.points">
-                <div class="d-flex justify-content-between align-items-center border-dark py-2" v-for="item in player.points">
-                  <div class="fw-bold text-capitalize">{{ item.type }}</div>
-                  <div class="d-flex custom-rounded bg-dark p-0">
-                    <div class="fs-5 fw-bold my-2 mx-3" :style="{'color': item.type.toLowerCase() == 'plus' ? '#06D001' : '#FD5D5D'}">{{ item.score }}</div>
-                    <div class="border-start" style="border-color: #404040 !important;">&nbsp;</div>
+                <div class="d-flex custom-rounded bg-dark justify-content-between align-items-center border-dark py-1 mb-2" v-for="item in player.points">
+                  <div class="d-flex p-0 align-items-center">
                     <button type="button" class="btn btn-link btn-small btn-circle ms-2 p-0 m-2" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmRemoveScore(item)"><i class="mdi mdi-trash-can text-secondary"></i></button>
+                    <div class="border-start" style="border-color: #404040 !important;">&nbsp;</div>
+                    <div class="fw-bold text-capitalize ms-3" style="font-size: 10pt">{{ item.type }}</div>
                   </div>
+                  <div class="fs-4 fw-bold me-3" :style="{'color': item.type.toLowerCase() == 'plus' ? '#F3C623' : '#F05A7E'}">
+                    <i class="mdi mdi-arrow-top-right" v-if="item.type.toLowerCase() == 'plus'"></i>
+                    <i class="mdi mdi-arrow-bottom-left" v-else></i>
+                    {{ item.score }}</div>
                 </div>
               </template>
               <div v-else class="text-dark py-3" style="font-size:14px">
