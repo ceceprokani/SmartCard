@@ -17,7 +17,7 @@
     <template v-else>
       <div class="row" v-if="listPlayer.length">
         <div class="col-xl-3 mb-3" v-for="player, index in listPlayer">
-          <div class="card custom-rounded border-0 bg-secondary player">
+          <div class="card custom-rounded border-0 bg-secondary player" :style="{'box-shadow': getWinner.player?.id === player.id ? '0 8px 16px rgba(255, 255, 0, 0.5)' : ''}">
             <div class="card-header custom-rounded-card-header" :class="{'bg-danger': allPoint(player) < 0, 'bg-warning': getWinner.player?.id === player.id}">
               <div class="d-flex justify-content-between align-items-center py-2">
                 <div class="fs-3 fw-bold m-0">
