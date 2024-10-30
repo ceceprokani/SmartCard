@@ -52,6 +52,7 @@
               </div>
               <div class="d-grid pt-2">
                 <button type="button" class="btn btn-warning custom-rounded fw-bold show-hover mb-2" data-bs-toggle="modal" data-bs-target="#formScore" @click="openFormScore(player)">ADD SCORE</button>
+                <button v-if="player.points.length" type="button" class="btn btn-danger custom-rounded fw-bold show-hover mb-2" data-bs-toggle="modal" data-bs-target="#resetScore" @click="confirmResetScore(player)">RESET SCORE</button>
                 <button type="button" class="btn btn-secondary text-dark custom-rounded fw-bold show-hover" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmKickPlayer(player)">KICK PLAYER</button>
               </div>
             </div>
@@ -94,6 +95,7 @@
       </div>
     </div>
   </div>
+  <!-- Modal -->
   <div class="modal fade" id="formScore" tabindex="-1" aria-labelledby="formScoreLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content custom-rounded bg-dark">
@@ -123,8 +125,25 @@
       </div>
     </div>
   </div>
-  <!-- Modal -->
+
   <div class="modal fade" id="confirm" tabindex="-1" aria-labelledby="confirmLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content custom-rounded bg-dark">
+        <div class="modal-header border-0">
+          <h5 class="modal-title text-white" id="confirmLabel">{{ confirmMessage.title }}</h5>
+        </div>
+        <div class="modal-body">
+          <div class="mb-2 text-white" v-html="confirmMessage.message"></div>
+        </div>
+        <div class="modal-footer border-0">
+          <button type="button" ref="closeModalConfirm" class="btn btn-link text-white text-decoration-none custom-rounded" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-secondary custom-rounded" @click="actionConfirm(confirmMessage.action)">{{ confirmMessage.action_title }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="resetScore" tabindex="-1" aria-labelledby="resetScoreLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content custom-rounded bg-dark">
         <div class="modal-header border-0">
@@ -307,6 +326,18 @@ export default {
         this.$toast.error('Data deleted failed!');
       }
     },
+    async resetScore(id) {
+      const buildQuery = query(collection(db, "score"),
+        where("userId", "==", id),
+      );
+
+      const scoreSnapshot = await getDocs(buildQuery);
+      const deletePromises = scoreSnapshot.docs.map((document) => deleteDoc(doc(db, "score", document.id)));
+      await Promise.all(deletePromises);
+
+      this.$refs.closeModalConfirm.click()
+      this.fetchData()
+    },
     async saveScore(userId, score, id=null) {
       let process = false
       if (id) {
@@ -340,6 +371,15 @@ export default {
       }
       this.detailPlayer = data
     },
+    confirmResetScore(data) {
+      this.confirmMessage = {
+        title: 'Reset Semua Score',
+        message: `Apakah kamu yakin akan mereset score pemain dengan Nama <span class="text-decoration-underline fw-bold fs-5">${data.name}</span> ?`,
+        action: 'reset-score',
+        action_title: 'Reset Score This Player'
+      }
+      this.detailPlayer = data
+    },
     confirmRemoveScore(score) {
       this.confirmMessage = {
         title: 'Remove Score',
@@ -356,6 +396,8 @@ export default {
           break;
         case 'remove-score':
           this.removeScore(this.detailScore.id)
+        case 'reset-score':
+          this.resetScore(this.detailPlayer.id)
         default:
           break;
       }
