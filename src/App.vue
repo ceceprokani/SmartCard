@@ -430,23 +430,64 @@ export default {
     },
     async saveScore(userId, score, id=null) {
       this.fetching = true
-      let process = false
+      let process   = false
+      const date    = new Date()
+
       if (id) {
         process = await setDoc(doc(db, "score", id), {
           userId: userId,
           score: score,
-          createdAt: new Date()
+          createdAt: date
         });
       } else {
         process = await addDoc(collection(db, "score"), {
           userId: userId,
           score: score,
-          createdAt: new Date()
+          createdAt: date
         });
       }
 
       this.fetching = false
       if (process) {
+        const allScoresSnapshot = await getDocs(collection(db, "score"));
+        const scores = allScoresSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+
+        let oldScoreUser = 0;
+        const totalScoresByUser = scores.reduce((acc, curr) => {
+          const createdAtDate = curr.createdAt.toDate();
+          
+          if (!acc[curr.userId]) {
+            acc[curr.userId] = 0;
+          }
+          acc[curr.userId] += curr.score;
+          if(createdAtDate < date && curr.userId == userId){
+            oldScoreUser += curr.score;
+          }
+          return acc;
+        }, {});
+
+
+        console.log(oldScoreUser);
+
+        const highestOpponentScore = Object.values(totalScoresByUser).filter(
+          (score) => score > 100 && score < totalScoresByUser[userId] && score !== totalScoresByUser[userId] && score > oldScoreUser
+        );
+
+        highestOpponentScore.forEach(async (item) => {
+          if (item) {
+            if (totalScoresByUser[userId] > item) {
+              const highestOpponentDoc = scores.find((s) => totalScoresByUser[s.userId] === item);
+              if (highestOpponentDoc) {
+                await addDoc(collection(db, "score"), {
+                  userId: highestOpponentDoc.userId,
+                  score: -item, 
+                  createdAt: new Date()
+                });
+              }
+            }
+          }
+        });
+
         setTimeout(() => {
           this.$refs.closeModalScore.click()
           this.fetchData()
