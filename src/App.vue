@@ -149,7 +149,7 @@
                <div class="d-block bg-secondary p-3 custom-rounded">
                   <div class="d-flex justify-content-between mb-3">
                     <label class="form-label text-white mb-3 fw-bold">Nilai Plus</label>
-                    <button type="button" class="btn btn-sm btn-dark custom-rounded py-0" @click="resetTempScore('min')" style="font-size: 10pt">Reset</button>
+                    <button type="button" class="btn btn-sm btn-dark custom-rounded py-0" @click="resetTempScore('plus')" style="font-size: 10pt">Reset</button>
                   </div>
                   <div class="row">
                     <div class="col-md-3">
@@ -195,7 +195,7 @@
         </div>
         <div class="modal-footer border-0">
           <button type="button" :disabled="fetching" ref="closeModalScore" class="btn btn-link text-white text-decoration-none custom-rounded" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn custom-rounded" :class="{'btn-warning fw-bold': isNumber(formScore.total), 'btn-secondary': formScore.total == ''}" :disabled="!isNumber(formScore.total) || fetching" @click="saveScore(detailPlayer.id, formScore.total)">Save changes</button>
+          <button type="button" class="btn custom-rounded btn-secondary" :class="{'btn-warning fw-bold': isNumber(formScore.total), 'btn-secondary': !isNumber(formScore.total)}" :disabled="!isNumber(formScore.total) || fetching" @click="saveScore(detailPlayer.id, formScore.total)">Save changes</button>
         </div>
       </div>
     </div>
