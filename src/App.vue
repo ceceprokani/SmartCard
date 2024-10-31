@@ -96,30 +96,106 @@
   </div>
   
   <div class="modal fade" id="formScore" tabindex="-1" aria-labelledby="formScoreLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content custom-rounded bg-dark">
         <div class="modal-header border-0">
-          <h5 class="modal-title text-white" id="formScoreLabel">Tambah Pemain Baru</h5>
+          <h5 class="modal-title text-white" id="formScoreLabel">Tambah Skor</h5>
         </div>
         <div class="modal-body">
-          <div class="form-group row text-white mb-3">
+          <div class="form-group row mb-3">
             <div class="col-md-6">
-              <label class="form-label mb-2">Nilai Min</label>
-              <input type="text" v-model="formScore.min" @input="calculcateScore" class="form-control custom-rounded bg-dark border-secondary text-white fs-6" placeholder="Enter minus score" />
+               <div class="d-block bg-secondary p-3 custom-rounded">
+                  <div class="d-flex justify-content-between mb-3">
+                    <label class="form-label text-white mb-3 fw-bold">Nilai Minus</label>
+                    <button type="button" class="btn btn-sm btn-dark custom-rounded py-0" @click="resetTempScore('min')" style="font-size: 10pt">Reset</button>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <img src="@/assets/images/diamond-ace-card.png" class="mb-3" style="width: 100%;">
+                      <input type="number" v-model="formScore.min.ace" @input="calculcateScore" class="form-control custom-rounded bg-dark border-secondary text-white mb-1 text-center" style="font-size: 11pt" placeholder="Score" />
+                      <div class="d-flex justify-content-between">
+                        <button @click="actionScore('min', 'ace', 'min')" class="btn btn-sm btn-dark custom-rounded p-0 flex-grow-1 py-1 me-2 border border-secondary"><i class="mdi mdi-minus fw-bold"></i></button>
+                        <button @click="actionScore('min', 'ace', 'add')" class="btn btn-sm btn-warning custom-rounded p-0 flex-grow-1 py-1"><i class="mdi mdi-plus fw-bold"></i></button>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <img src="@/assets/images/diamond-king-card.png" class="mb-3" style="width: 100%;">
+                      <input type="number" v-model="formScore.min.king" @input="calculcateScore" class="form-control custom-rounded bg-dark border-secondary text-white mb-1 text-center" style="font-size: 11pt" placeholder="Score" />
+                      <div class="d-flex justify-content-between">
+                        <button @click="actionScore('min', 'king', 'min')" class="btn btn-sm btn-dark custom-rounded p-0 flex-grow-1 py-1 me-2 border border-secondary"><i class="mdi mdi-minus fw-bold"></i></button>
+                        <button @click="actionScore('min', 'king', 'add')" class="btn btn-sm btn-warning custom-rounded p-0 flex-grow-1 py-1"><i class="mdi mdi-plus fw-bold"></i></button>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <img src="@/assets/images/diamond-number-card.png" class="mb-3" style="width: 100%;">
+                      <input type="number" v-model="formScore.min.number" @input="calculcateScore" class="form-control custom-rounded bg-dark border-secondary text-white mb-1 text-center" style="font-size: 11pt" placeholder="Score" />
+                      <div class="d-flex justify-content-between">
+                        <button @click="actionScore('min', 'number', 'min')" class="btn btn-sm btn-dark custom-rounded p-0 flex-grow-1 py-1 me-2 border border-secondary"><i class="mdi mdi-minus fw-bold"></i></button>
+                        <button @click="actionScore('min', 'number', 'add')" class="btn btn-sm btn-warning custom-rounded p-0 flex-grow-1 py-1"><i class="mdi mdi-plus fw-bold"></i></button>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <img src="@/assets/images/diamond-joker-card.png" class="mb-3" style="width: 100%;">
+                      <input type="number" v-model="formScore.min.joker" @input="calculcateScore" class="form-control custom-rounded bg-dark border-secondary text-white mb-1 text-center" style="font-size: 11pt" placeholder="Score" />
+                      <div class="d-flex justify-content-between">
+                        <button @click="actionScore('min', 'joker', 'min')" class="btn btn-sm btn-dark custom-rounded p-0 flex-grow-1 py-1 me-2 border border-secondary"><i class="mdi mdi-minus fw-bold"></i></button>
+                        <button @click="actionScore('min', 'joker', 'add')" class="btn btn-sm btn-warning custom-rounded p-0 flex-grow-1 py-1"><i class="mdi mdi-plus fw-bold"></i></button>
+                      </div>
+                    </div>
+                  </div>
+               </div>
             </div>
             <div class="col-md-6">
-              <label class="form-label mb-2">Nilai Plus</label>
-              <input type="text" v-model="formScore.plus" @input="calculcateScore" class="form-control custom-rounded bg-dark border-secondary text-white fs-6" placeholder="Enter plus score" />
+               <div class="d-block bg-secondary p-3 custom-rounded">
+                  <div class="d-flex justify-content-between mb-3">
+                    <label class="form-label text-white mb-3 fw-bold">Nilai Plus</label>
+                    <button type="button" class="btn btn-sm btn-dark custom-rounded py-0" @click="resetTempScore('plus')" style="font-size: 10pt">Reset</button>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <img src="@/assets/images/ace-card.png" class="mb-3" style="width: 100%;">
+                      <input type="number" v-model="formScore.plus.ace" @input="calculcateScore" class="form-control custom-rounded bg-dark border-secondary text-white mb-1 text-center" style="font-size: 11pt" placeholder="Score" />
+                      <div class="d-flex justify-content-between">
+                        <button @click="actionScore('plus', 'ace', 'min')" class="btn btn-sm btn-dark custom-rounded p-0 flex-grow-1 py-1 me-2 border border-secondary"><i class="mdi mdi-minus fw-bold"></i></button>
+                        <button @click="actionScore('plus', 'ace', 'add')" class="btn btn-sm btn-warning custom-rounded p-0 flex-grow-1 py-1"><i class="mdi mdi-plus fw-bold"></i></button>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <img src="@/assets/images/king-card.png" class="mb-3" style="width: 100%;">
+                      <input type="number" v-model="formScore.plus.king" @input="calculcateScore" class="form-control custom-rounded bg-dark border-secondary text-white mb-1 text-center" style="font-size: 11pt" placeholder="Score" />
+                      <div class="d-flex justify-content-between">
+                        <button @click="actionScore('plus', 'king', 'min')" class="btn btn-sm btn-dark custom-rounded p-0 flex-grow-1 py-1 me-2 border border-secondary"><i class="mdi mdi-minus fw-bold"></i></button>
+                        <button @click="actionScore('plus', 'king', 'add')" class="btn btn-sm btn-warning custom-rounded p-0 flex-grow-1 py-1"><i class="mdi mdi-plus fw-bold"></i></button>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <img src="@/assets/images/number-card.png" class="mb-3" style="width: 100%;">
+                      <input type="number" v-model="formScore.plus.number" @input="calculcateScore" class="form-control custom-rounded bg-dark border-secondary text-white mb-1 text-center" style="font-size: 11pt" placeholder="Score" />
+                      <div class="d-flex justify-content-between">
+                        <button @click="actionScore('plus', 'number', 'min')" class="btn btn-sm btn-dark custom-rounded p-0 flex-grow-1 py-1 me-2 border border-secondary"><i class="mdi mdi-minus fw-bold"></i></button>
+                        <button @click="actionScore('plus', 'number', 'add')" class="btn btn-sm btn-warning custom-rounded p-0 flex-grow-1 py-1"><i class="mdi mdi-plus fw-bold"></i></button>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <img src="@/assets/images/joker-card.png" class="mb-3" style="width: 100%;">
+                      <input type="number" v-model="formScore.plus.joker" @input="calculcateScore" class="form-control custom-rounded bg-dark border-secondary text-white mb-1 text-center" style="font-size: 11pt" placeholder="Score" />
+                      <div class="d-flex justify-content-between">
+                        <button @click="actionScore('plus', 'joker', 'min')" class="btn btn-sm btn-dark custom-rounded p-0 flex-grow-1 py-1 me-2 border border-secondary"><i class="mdi mdi-minus fw-bold"></i></button>
+                        <button @click="actionScore('plus', 'joker', 'add')" class="btn btn-sm btn-warning custom-rounded p-0 flex-grow-1 py-1"><i class="mdi mdi-plus fw-bold"></i></button>
+                      </div>
+                    </div>
+                  </div>
+               </div>
             </div>
           </div>
           <div class="form-group text-white mb-3">
             <label class="form-label mb-2">Total Nilai</label>
-            <input type="text" v-model="formScore.total" class="form-control custom-rounded bg-dark border-secondary text-white fs-6" placeholder="Enter total of score ..." />
+            <input type="number" v-model="formScore.total" class="form-control custom-rounded bg-dark border-secondary text-white fs-6" placeholder="Enter total of score ..." />
           </div>
         </div>
         <div class="modal-footer border-0">
           <button type="button" :disabled="fetching" ref="closeModalScore" class="btn btn-link text-white text-decoration-none custom-rounded" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn custom-rounded" :class="{'btn-warning fw-bold': formScore.total, 'btn-secondary': !formScore.total}" :disabled="!formScore.total || fetching" @click="saveScore(detailPlayer.id, formScore.total)">Save changes</button>
+          <button type="button" class="btn custom-rounded btn-secondary" :class="{'btn-warning fw-bold': isNumber(formScore.total), 'btn-secondary': !isNumber(formScore.total)}" :disabled="!isNumber(formScore.total) || fetching" @click="saveScore(detailPlayer.id, formScore.total)">Save changes</button>
         </div>
       </div>
     </div>
@@ -165,8 +241,18 @@ export default {
         action_title: ''
       },
       formScore: {
-        min: '',
-        plus: '',
+        min: {
+          ace: 0,
+          king: 0,
+          number: 0,
+          joker: 0
+        },
+        plus: {
+          ace: 0,
+          king: 0,
+          number: 0,
+          joker: 0
+        },
         total: ''
       },
       detailScore: null
@@ -198,6 +284,11 @@ export default {
       return {
         'score': result,
         'player': playerHighScore
+      }
+    },
+    isNumber() {
+      return (value) => {
+        return typeof value === 'number' && !isNaN(value);
       }
     }
   },
@@ -272,7 +363,7 @@ export default {
         setTimeout(() => {
           this.$refs.closeModal.click()
           this.fetchData()
-        }, 500);
+        }, 100);
         this.$toast.success('Data saved successfully!');
       } else {
         this.$toast.error('Data saved failed!');
@@ -302,7 +393,7 @@ export default {
       setTimeout(() => {
         this.$refs.closeModalConfirm.click()
         this.fetchData()
-      }, 500);
+      }, 100);
     },
     async removeScore(id) {
       this.fetching = true
@@ -314,7 +405,7 @@ export default {
         setTimeout(() => {
           this.$refs.closeModalConfirm.click()
           this.fetchData()
-        }, 500);
+        }, 100);
         this.$toast.success('Data deleted successfully!');
       } catch (error) {
         this.fetching = false
@@ -335,7 +426,7 @@ export default {
       setTimeout(() => {
         this.$refs.closeModalConfirm.click()
         this.fetchData()
-      }, 500);
+      }, 100);
     },
     async saveScore(userId, score, id=null) {
       this.fetching = true
@@ -359,7 +450,7 @@ export default {
         setTimeout(() => {
           this.$refs.closeModalScore.click()
           this.fetchData()
-        }, 500);
+        }, 100);
         this.$toast.success('Data saved successfully!');
       } else {
         this.$toast.error('Data saved failed!');
@@ -410,10 +501,22 @@ export default {
     calculcateScore() {
       let result = 0
 
-      if (this.formScore.min >= 0) {
-        result -= parseInt(this.formScore.min) || 0
-      } if (this.formScore.plus >= 0) {
-        result += parseInt(this.formScore.plus) || 0
+      if (this.formScore.min.ace >= 0) {
+        result -= parseInt(this.formScore.min.ace * 15) || 0
+      } if (this.formScore.min.king >= 0) {
+        result -= parseInt(this.formScore.min.king * 10) || 0
+      } if (this.formScore.min.number >= 0) {
+        result -= parseInt(this.formScore.min.number * 5) || 0
+      } if (this.formScore.min.joker >= 0) {
+        result -= parseInt(this.formScore.min.joker) || 0
+      } if (this.formScore.plus.ace >= 0) {
+        result += parseInt(this.formScore.plus.ace * 15) || 0
+      } if (this.formScore.plus.king >= 0) {
+        result += parseInt(this.formScore.plus.king * 10) || 0
+      } if (this.formScore.plus.number >= 0) {
+        result += parseInt(this.formScore.plus.number * 5) || 0
+      } if (this.formScore.plus.joker >= 0) {
+        result += parseInt(this.formScore.plus.joker) || 0
       }
 
       this.formScore.total = result
@@ -421,9 +524,18 @@ export default {
     openFormScore(data) {
       this.detailPlayer = data
       this.formScore = {
-        min: '',
-        plus: '',
-        total: ''
+        min: {
+          ace: 0,
+          king: 0,
+          number: 0,
+          joker: 0
+        },
+        plus: {
+          ace: 0,
+          king: 0,
+          number: 0,
+          joker: 0
+        },
       }
     },
     async updatePlayer(data) {
@@ -440,6 +552,44 @@ export default {
         this.$toast.error('Data saved failed! ' . error.message);
       }
     },
+    actionScore(scoreType, typeCard, action) {
+      switch(typeCard) {
+        case 'ace':
+            if(action == 'add')
+              this.formScore[scoreType].ace = (parseInt(this.formScore[scoreType].ace) || 0) + 1
+            else
+              this.formScore[scoreType].ace -= (this.formScore[scoreType].ace > 0 ? 1 : 0)
+          break;
+        case 'king':
+            if(action == 'add')
+              this.formScore[scoreType].king = (parseInt(this.formScore[scoreType].king) || 0) + 1
+            else
+              this.formScore[scoreType].king -= (this.formScore[scoreType].king > 0 ? 1 : 0)
+          break;
+        case 'number':
+            if(action == 'add')
+              this.formScore[scoreType].number = (parseInt(this.formScore[scoreType].number) || 0) + 1 
+            else
+              this.formScore[scoreType].number -= (this.formScore[scoreType].number > 0 ? 1 : 0)
+          break;
+        case 'joker':
+            if(action == 'add')
+              this.formScore[scoreType].joker = (parseInt(this.formScore[scoreType].joker) || 0) + 1
+            else
+              this.formScore[scoreType].joker -= (this.formScore[scoreType].joker > 0 ? 1 : 0)
+          break;
+      }
+      this.calculcateScore()
+    },
+    resetTempScore(type) {
+      this.formScore[type] = {
+        ace: 0,
+        king: 0,
+        number: 0,
+        joker: 0
+      },
+      this.calculcateScore()
+    }
   }
 }
 </script>
