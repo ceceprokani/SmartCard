@@ -16,18 +16,18 @@
     </div>
     <template v-else>
       <div class="row" v-if="listPlayer.length">
-        <div class="col-xl-3 mb-3" v-for="player, index in listPlayer">
-          <div class="card custom-rounded border-0 bg-secondary player">
+        <div class="col-xl-3 mb-3" v-for="player, index in listPlayer" :key="index">
+          <div :class="`card custom-rounded border-0 bg-secondary player ${getWinner.player?.id === player.id && 'win-effect'}`">
             <div class="card-header custom-rounded-card-header bg-secondary" :class="{'bg-danger': allPoint(player) < 0, 'bg-warning': getWinner.player?.id === player.id}">
               <div class="d-flex justify-content-between align-items-center py-2">
-                <i class="mdi mdi-lightning-bolt flex-shrink-0 fs-2 fw-bold" style="filter: drop-shadow(0px 2px 4px rgba(255, 255, 255, 1));" v-if="getWinner.player?.id === player.id"></i>
+                <i class="mdi mdi-crown flex-shrink-0 fs-2 fw-bold" style="filter: drop-shadow(0px 2px 4px rgba(255, 255, 255, 1));" v-if="getWinner.player?.id === player.id"></i>
                 <input type="text" v-model="player.name" class="form-control no-hover me-2 fs-3 border-0 bg-transparent px-0 fw-bold text-white" @blur="updatePlayer(player)" />
                 <div class="fs-3 fw-bold m-0 flex-shrink-0" :style="{'color': allPoint(player) < 0 ? 'white' : 'white'}">{{ allPoint(player) }} <span class="fs-6">pts</span></div>
               </div>
             </div>
             <div class="card-body">
               <template v-if="player.points.length">
-                <div class="d-flex custom-rounded bg-dark justify-content-between align-items-center border-dark mb-2" v-for="item in player.points">
+                <div class="d-flex custom-rounded bg-dark justify-content-between align-items-center border-dark mb-2" v-for="item in player.points" :key="item.id">
                   <div class="d-flex p-0 align-items-center">
                     <button type="button" class="btn btn-link btn-small btn-circle ms-2 p-0 m-2" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmRemoveScore(item)"><i class="mdi mdi-trash-can text-secondary"></i></button>
                     <div class="border-start" style="border-color: #404040 !important;">&nbsp;</div>
