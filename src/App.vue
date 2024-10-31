@@ -17,19 +17,17 @@
     <template v-else>
       <div class="row" v-if="listPlayer.length">
         <div class="col-xl-3 mb-3" v-for="player, index in listPlayer">
-          <div class="card custom-rounded border-0 bg-secondary player" :style="{'box-shadow': getWinner.player?.id === player.id ? '0 8px 16px rgba(255, 255, 0, 0.5)' : ''}">
-            <div class="card-header custom-rounded-card-header" :class="{'bg-danger': allPoint(player) < 0, 'bg-warning': getWinner.player?.id === player.id}">
+          <div class="card custom-rounded border-0 bg-secondary player">
+            <div class="card-header custom-rounded-card-header bg-secondary" :class="{'bg-danger': allPoint(player) < 0, 'bg-warning': getWinner.player?.id === player.id}">
               <div class="d-flex justify-content-between align-items-center py-2">
-                <div class="fs-3 fw-bold m-0">
-                  <i class="mdi mdi-lightning-bolt" style="filter: drop-shadow(0px 2px 4px rgba(255, 255, 255, 1));" v-if="getWinner.player?.id === player.id"></i>
-                  {{ player.name }}
-                </div>
-                <div class="fs-3 fw-bold m-0" :style="{'color': allPoint(player) < 0 ? 'white' : 'white'}">{{ allPoint(player) }} <span class="fs-6">pts</span></div>
+                <i class="mdi mdi-lightning-bolt flex-shrink-0 fs-2 fw-bold" style="filter: drop-shadow(0px 2px 4px rgba(255, 255, 255, 1));" v-if="getWinner.player?.id === player.id"></i>
+                <input type="text" v-model="player.name" class="form-control no-hover me-2 fs-3 border-0 bg-transparent px-0 fw-bold text-white" @blur="updatePlayer(player)" />
+                <div class="fs-3 fw-bold m-0 flex-shrink-0" :style="{'color': allPoint(player) < 0 ? 'white' : 'white'}">{{ allPoint(player) }} <span class="fs-6">pts</span></div>
               </div>
             </div>
             <div class="card-body">
               <template v-if="player.points.length">
-                <div class="d-flex custom-rounded bg-dark justify-content-between align-items-center border-dark py-1 mb-2" v-for="item in player.points">
+                <div class="d-flex custom-rounded bg-dark justify-content-between align-items-center border-dark mb-2" v-for="item in player.points">
                   <div class="d-flex p-0 align-items-center">
                     <button type="button" class="btn btn-link btn-small btn-circle ms-2 p-0 m-2" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmRemoveScore(item)"><i class="mdi mdi-trash-can text-secondary"></i></button>
                     <div class="border-start" style="border-color: #404040 !important;">&nbsp;</div>
@@ -50,10 +48,12 @@
                 <input type="number" class="form-control custom-rounded bg-dark border-secondary text-white fs-6" placeholder="Enter point..." v-model="player.score" />
                 <button type="button" class="btn btn-dark custom-rounded fw-bold ms-2" v-if="player.score" @click="saveScore(player.id, player.score)">ADD</button>
               </div>
-              <div class="d-grid pt-2">
-                <button type="button" class="btn btn-warning custom-rounded fw-bold show-hover mb-2" data-bs-toggle="modal" data-bs-target="#formScore" @click="openFormScore(player)">ADD SCORE</button>
-                <button v-if="player.points.length" type="button" class="btn btn-danger custom-rounded fw-bold show-hover mb-2" data-bs-toggle="modal" data-bs-target="#resetScore" @click="confirmResetScore(player)">RESET SCORE</button>
-                <button type="button" class="btn btn-secondary text-dark custom-rounded fw-bold show-hover" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmKickPlayer(player)">KICK PLAYER</button>
+              <div class="d-grid pt-2 mb-2">
+                <button type="button" class="btn btn-warning custom-rounded fw-bold show-hover" data-bs-toggle="modal" data-bs-target="#formScore" @click="openFormScore(player)">ADD SCORE</button>
+              </div>
+              <div class="d-flex justify-content-between mb-2">
+                <button v-if="player.points.length" type="button" class="btn btn-secondary text-dark custom-rounded fw-bold show-hover" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmResetScore(player)">RESET SCORE</button>
+                <button type="button" class="btn btn-secondary text-dark custom-rounded fw-bold show-hover" :class="{'w-100': !player.points.length}" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmKickPlayer(player)">KICK PLAYER</button>
               </div>
             </div>
           </div>
@@ -65,13 +65,12 @@
           <div class="text-muted">Belum ada pemain untuk saat ini.</div>
           <div class="text-muted mb-4">Silahkan tentukan para pemain terlebih dahulu</div>
 
-          <button class="btn btn-warning p-3 custom-rounded" data-bs-toggle="modal" data-bs-target="#addMember" @click="resetForm"><i class="mdi mdi-plus me-2"></i>ADD NEW PLAYER</button>
+          <button class="btn btn-warning px-3 custom-rounded fw-bold" data-bs-toggle="modal" data-bs-target="#addMember" @click="resetForm"><i class="mdi mdi-plus me-2"></i>ADD NEW PLAYER</button>
         </div>
       </div>
     </template>
   </div>
 
-  <!-- Modal -->
   <div class="modal fade" id="addMember" tabindex="-1" aria-labelledby="addMemberLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content custom-rounded bg-dark">
@@ -83,19 +82,19 @@
             <label class="form-label mb-2">Nama Pemain</label>
             <input type="text" v-model="form.name" class="form-control custom-rounded bg-dark border-secondary text-white fs-6" placeholder="Enter name of player..." />
           </div>
-          <div class="form-group text-white">
+          <div class="d-none form-group text-white">
             <label class="form-label mb-2">Poin</label>
             <input type="number" v-model="form.point" class="form-control custom-rounded bg-dark border-secondary text-white fs-6" placeholder="Enter point of player (optional)..." />
           </div>
         </div>
         <div class="modal-footer border-0">
-          <button type="button" ref="closeModal" class="btn btn-link text-white text-decoration-none custom-rounded" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn custom-rounded" :class="{'btn-secondary': !form.name, 'btn-warning fw-bold': form.name}" @click="saveMember">Save changes</button>
+          <button type="button" :disabled="fetching" ref="closeModal" class="btn btn-link text-white text-decoration-none custom-rounded" data-bs-dismiss="modal">Close</button>
+          <button type="button" :disabled="fetching" class="btn custom-rounded" :class="{'btn-secondary': !form.name, 'btn-warning fw-bold': form.name}" @click="saveMember">Save changes</button>
         </div>
       </div>
     </div>
   </div>
-  <!-- Modal -->
+  
   <div class="modal fade" id="formScore" tabindex="-1" aria-labelledby="formScoreLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content custom-rounded bg-dark">
@@ -119,8 +118,8 @@
           </div>
         </div>
         <div class="modal-footer border-0">
-          <button type="button" ref="closeModalScore" class="btn btn-link text-white text-decoration-none custom-rounded" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn custom-rounded" :class="{'btn-warning fw-bold': formScore.total, 'btn-secondary': !formScore.total}" :disabled="!formScore.total" @click="saveScore(detailPlayer.id, formScore.total)">Save changes</button>
+          <button type="button" :disabled="fetching" ref="closeModalScore" class="btn btn-link text-white text-decoration-none custom-rounded" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn custom-rounded" :class="{'btn-warning fw-bold': formScore.total, 'btn-secondary': !formScore.total}" :disabled="!formScore.total || fetching" @click="saveScore(detailPlayer.id, formScore.total)">Save changes</button>
         </div>
       </div>
     </div>
@@ -136,25 +135,8 @@
           <div class="mb-2 text-white" v-html="confirmMessage.message"></div>
         </div>
         <div class="modal-footer border-0">
-          <button type="button" ref="closeModalConfirm" class="btn btn-link text-white text-decoration-none custom-rounded" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-secondary custom-rounded" @click="actionConfirm(confirmMessage.action)">{{ confirmMessage.action_title }}</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal fade" id="resetScore" tabindex="-1" aria-labelledby="resetScoreLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content custom-rounded bg-dark">
-        <div class="modal-header border-0">
-          <h5 class="modal-title text-white" id="confirmLabel">{{ confirmMessage.title }}</h5>
-        </div>
-        <div class="modal-body">
-          <div class="mb-2 text-white" v-html="confirmMessage.message"></div>
-        </div>
-        <div class="modal-footer border-0">
-          <button type="button" ref="closeModalConfirm" class="btn btn-link text-white text-decoration-none custom-rounded" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-secondary custom-rounded" @click="actionConfirm(confirmMessage.action)">{{ confirmMessage.action_title }}</button>
+          <button type="button" ref="closeModalConfirm" :disabled="fetching" class="btn btn-link text-white text-decoration-none custom-rounded" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-secondary custom-rounded" :disabled="fetching" @click="actionConfirm(confirmMessage.action)">{{ confirmMessage.action_title }}</button>
         </div>
       </div>
     </div>
@@ -279,14 +261,18 @@ export default {
       return result
     },
     async saveMember() {
+      this.fetching = true
       const process = await addDoc(collection(db, "player"), {
           name: this.form.name,
           point: this.form.point,
       });
 
+      this.fetching = false
       if (process.id) {
-        this.$refs.closeModal.click()
-        this.fetchData()
+        setTimeout(() => {
+          this.$refs.closeModal.click()
+          this.fetchData()
+        }, 500);
         this.$toast.success('Data saved successfully!');
       } else {
         this.$toast.error('Data saved failed!');
@@ -299,6 +285,7 @@ export default {
       }
     },
     async kickPlayer(id) {
+      this.fetching = true
       const playerRef = doc(db, "player", id);
       await deleteDoc(playerRef);
       
@@ -311,22 +298,31 @@ export default {
       const deletePromises = scoreSnapshot.docs.map((document) => deleteDoc(doc(db, "score", document.id)));
       await Promise.all(deletePromises);
 
-      this.$refs.closeModalConfirm.click()
-      this.fetchData()
+      this.fetching = false
+      setTimeout(() => {
+        this.$refs.closeModalConfirm.click()
+        this.fetchData()
+      }, 500);
     },
     async removeScore(id) {
+      this.fetching = true
       try {
         const scoreRef = doc(db, "score", id);
         await deleteDoc(scoreRef);
 
-        this.$refs.closeModalConfirm.click()
-        this.fetchData()
+        this.fetching = false
+        setTimeout(() => {
+          this.$refs.closeModalConfirm.click()
+          this.fetchData()
+        }, 500);
         this.$toast.success('Data deleted successfully!');
       } catch (error) {
+        this.fetching = false
         this.$toast.error('Data deleted failed!');
       }
     },
     async resetScore(id) {
+      this.fetching = true
       const buildQuery = query(collection(db, "score"),
         where("userId", "==", id),
       );
@@ -335,10 +331,14 @@ export default {
       const deletePromises = scoreSnapshot.docs.map((document) => deleteDoc(doc(db, "score", document.id)));
       await Promise.all(deletePromises);
 
-      this.$refs.closeModalConfirm.click()
-      this.fetchData()
+      this.fetching = false
+      setTimeout(() => {
+        this.$refs.closeModalConfirm.click()
+        this.fetchData()
+      }, 500);
     },
     async saveScore(userId, score, id=null) {
+      this.fetching = true
       let process = false
       if (id) {
         process = await setDoc(doc(db, "score", id), {
@@ -354,9 +354,12 @@ export default {
         });
       }
 
+      this.fetching = false
       if (process) {
-        this.$refs.closeModalScore.click()
-        this.fetchData()
+        setTimeout(() => {
+          this.$refs.closeModalScore.click()
+          this.fetchData()
+        }, 500);
         this.$toast.success('Data saved successfully!');
       } else {
         this.$toast.error('Data saved failed!');
@@ -396,8 +399,10 @@ export default {
           break;
         case 'remove-score':
           this.removeScore(this.detailScore.id)
+          break;
         case 'reset-score':
           this.resetScore(this.detailPlayer.id)
+          break;
         default:
           break;
       }
@@ -420,7 +425,21 @@ export default {
         plus: '',
         total: ''
       }
-    }
+    },
+    async updatePlayer(data) {
+      this.fetching = true
+
+      try {
+        await setDoc(doc(db, "player", data.id), {
+          name: data.name
+        });
+  
+        this.fetching = false
+        this.$toast.success('Data saved successfully!');
+      } catch (error) {
+        this.$toast.error('Data saved failed! ' . error.message);
+      }
+    },
   }
 }
 </script>
