@@ -1,0 +1,17 @@
+.win-effect {
+    position: relative;
+    animation: shadowPulse 2s linear infinite;
+  }
+  
+  @keyframes shadowPulse {
+    0% {
+      box-shadow: 0px 2px 4px rgba(225, 255, 0, 0);
+    }
+    50% {
+      box-shadow: 0px 2px 4px rgb(234, 255, 0);
+    }
+    100% {
+      box-shadow: 0px 2px 4px rgba(255, 255, 255, 0);
+    }
+  }
+  
