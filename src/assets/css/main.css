@@ -62,8 +62,22 @@ input[type="number"] {
     visibility: visible;
 }
 
+.mobile-hide {
+    display: block;
+}
+
 /* Tablet: untuk layar dengan lebar minimal 768px */
 @media (min-width: 768px) {
+    .title-app {
+        font-size: 24px
+    }
+}
+
+/* Tablet: untuk layar dengan lebar minimal 768px */
+@media (max-width: 768px) {
+    .mobile-hide {
+        display: none;
+    }
     .title-app {
         font-size: 24px
     }

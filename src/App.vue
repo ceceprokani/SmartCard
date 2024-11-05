@@ -99,93 +99,98 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content custom-rounded bg-dark">
         <div class="modal-header border-0">
-          <h5 class="modal-title text-white" id="formScoreLabel">Tambah Skor</h5>
+          <div class="d-block">
+            <h6 class="modal-title text-white mb-2">{{ detailPlayer.name }}</h6>
+            <h5 class="text-white" id="formScoreLabel">Tambah Skor</h5>
+          </div>
         </div>
         <div class="modal-body">
-          <div class="form-group row mb-3">
-            <div class="col-md-6">
-               <div class="d-block bg-secondary p-3 custom-rounded">
-                  <div class="d-flex justify-content-between mb-3">
-                    <label class="form-label text-white mb-3 fw-bold">Nilai Minus</label>
-                    <button type="button" class="btn btn-sm btn-dark custom-rounded py-0" @click="resetTempScore('min')" style="font-size: 10pt">Reset</button>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-3">
-                      <img src="@/assets/images/diamond-ace-card.png" class="mb-3" style="width: 100%;">
-                      <input type="number" v-model="formScore.min.ace" @input="calculcateScore" class="form-control custom-rounded bg-dark border-secondary text-white mb-1 text-center" style="font-size: 11pt" placeholder="Score" />
-                      <div class="d-flex justify-content-between">
-                        <button @click="actionScore('min', 'ace', 'min')" class="btn btn-sm btn-dark custom-rounded p-0 flex-grow-1 py-1 me-2 border border-secondary"><i class="mdi mdi-minus fw-bold"></i></button>
-                        <button @click="actionScore('min', 'ace', 'add')" class="btn btn-sm btn-warning custom-rounded p-0 flex-grow-1 py-1"><i class="mdi mdi-plus fw-bold"></i></button>
+          <div class="form-group mb-3 mobile-hide">
+            <div class="row">
+              <div class="col-md-6">
+                 <div class="d-block bg-secondary p-3 custom-rounded">
+                    <div class="d-flex justify-content-between mb-3">
+                      <label class="form-label text-white mb-3 fw-bold">Nilai Minus</label>
+                      <button type="button" class="btn btn-sm btn-dark custom-rounded py-0" @click="resetTempScore('min')" style="font-size: 10pt">Reset</button>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3">
+                        <img src="@/assets/images/diamond-ace-card.png" class="mb-3" style="width: 100%;">
+                        <input type="number" v-model="formScore.min.ace" @input="calculcateScore" class="form-control custom-rounded bg-dark border-secondary text-white mb-1 text-center" style="font-size: 11pt" placeholder="Score" />
+                        <div class="d-flex justify-content-between">
+                          <button @click="actionScore('min', 'ace', 'min')" class="btn btn-sm btn-dark custom-rounded p-0 flex-grow-1 py-1 me-2 border border-secondary"><i class="mdi mdi-minus fw-bold"></i></button>
+                          <button @click="actionScore('min', 'ace', 'add')" class="btn btn-sm btn-warning custom-rounded p-0 flex-grow-1 py-1"><i class="mdi mdi-plus fw-bold"></i></button>
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <img src="@/assets/images/diamond-king-card.png" class="mb-3" style="width: 100%;">
+                        <input type="number" v-model="formScore.min.king" @input="calculcateScore" class="form-control custom-rounded bg-dark border-secondary text-white mb-1 text-center" style="font-size: 11pt" placeholder="Score" />
+                        <div class="d-flex justify-content-between">
+                          <button @click="actionScore('min', 'king', 'min')" class="btn btn-sm btn-dark custom-rounded p-0 flex-grow-1 py-1 me-2 border border-secondary"><i class="mdi mdi-minus fw-bold"></i></button>
+                          <button @click="actionScore('min', 'king', 'add')" class="btn btn-sm btn-warning custom-rounded p-0 flex-grow-1 py-1"><i class="mdi mdi-plus fw-bold"></i></button>
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <img src="@/assets/images/diamond-number-card.png" class="mb-3" style="width: 100%;">
+                        <input type="number" v-model="formScore.min.number" @input="calculcateScore" class="form-control custom-rounded bg-dark border-secondary text-white mb-1 text-center" style="font-size: 11pt" placeholder="Score" />
+                        <div class="d-flex justify-content-between">
+                          <button @click="actionScore('min', 'number', 'min')" class="btn btn-sm btn-dark custom-rounded p-0 flex-grow-1 py-1 me-2 border border-secondary"><i class="mdi mdi-minus fw-bold"></i></button>
+                          <button @click="actionScore('min', 'number', 'add')" class="btn btn-sm btn-warning custom-rounded p-0 flex-grow-1 py-1"><i class="mdi mdi-plus fw-bold"></i></button>
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <img src="@/assets/images/diamond-joker-card.png" class="mb-3" style="width: 100%;">
+                        <input type="number" v-model="formScore.min.joker" @input="calculcateScore" class="form-control custom-rounded bg-dark border-secondary text-white mb-1 text-center" style="font-size: 11pt" placeholder="Score" />
+                        <div class="d-flex justify-content-between">
+                          <button @click="actionScore('min', 'joker', 'min')" class="btn btn-sm btn-dark custom-rounded p-0 flex-grow-1 py-1 me-2 border border-secondary"><i class="mdi mdi-minus fw-bold"></i></button>
+                          <button @click="actionScore('min', 'joker', 'add')" class="btn btn-sm btn-warning custom-rounded p-0 flex-grow-1 py-1"><i class="mdi mdi-plus fw-bold"></i></button>
+                        </div>
                       </div>
                     </div>
-                    <div class="col-md-3">
-                      <img src="@/assets/images/diamond-king-card.png" class="mb-3" style="width: 100%;">
-                      <input type="number" v-model="formScore.min.king" @input="calculcateScore" class="form-control custom-rounded bg-dark border-secondary text-white mb-1 text-center" style="font-size: 11pt" placeholder="Score" />
-                      <div class="d-flex justify-content-between">
-                        <button @click="actionScore('min', 'king', 'min')" class="btn btn-sm btn-dark custom-rounded p-0 flex-grow-1 py-1 me-2 border border-secondary"><i class="mdi mdi-minus fw-bold"></i></button>
-                        <button @click="actionScore('min', 'king', 'add')" class="btn btn-sm btn-warning custom-rounded p-0 flex-grow-1 py-1"><i class="mdi mdi-plus fw-bold"></i></button>
+                 </div>
+              </div>
+              <div class="col-md-6">
+                 <div class="d-block bg-secondary p-3 custom-rounded">
+                    <div class="d-flex justify-content-between mb-3">
+                      <label class="form-label text-white mb-3 fw-bold">Nilai Plus</label>
+                      <button type="button" class="btn btn-sm btn-dark custom-rounded py-0" @click="resetTempScore('plus')" style="font-size: 10pt">Reset</button>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3">
+                        <img src="@/assets/images/ace-card.png" class="mb-3" style="width: 100%;">
+                        <input type="number" v-model="formScore.plus.ace" @input="calculcateScore" class="form-control custom-rounded bg-dark border-secondary text-white mb-1 text-center" style="font-size: 11pt" placeholder="Score" />
+                        <div class="d-flex justify-content-between">
+                          <button @click="actionScore('plus', 'ace', 'min')" class="btn btn-sm btn-dark custom-rounded p-0 flex-grow-1 py-1 me-2 border border-secondary"><i class="mdi mdi-minus fw-bold"></i></button>
+                          <button @click="actionScore('plus', 'ace', 'add')" class="btn btn-sm btn-warning custom-rounded p-0 flex-grow-1 py-1"><i class="mdi mdi-plus fw-bold"></i></button>
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <img src="@/assets/images/king-card.png" class="mb-3" style="width: 100%;">
+                        <input type="number" v-model="formScore.plus.king" @input="calculcateScore" class="form-control custom-rounded bg-dark border-secondary text-white mb-1 text-center" style="font-size: 11pt" placeholder="Score" />
+                        <div class="d-flex justify-content-between">
+                          <button @click="actionScore('plus', 'king', 'min')" class="btn btn-sm btn-dark custom-rounded p-0 flex-grow-1 py-1 me-2 border border-secondary"><i class="mdi mdi-minus fw-bold"></i></button>
+                          <button @click="actionScore('plus', 'king', 'add')" class="btn btn-sm btn-warning custom-rounded p-0 flex-grow-1 py-1"><i class="mdi mdi-plus fw-bold"></i></button>
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <img src="@/assets/images/number-card.png" class="mb-3" style="width: 100%;">
+                        <input type="number" v-model="formScore.plus.number" @input="calculcateScore" class="form-control custom-rounded bg-dark border-secondary text-white mb-1 text-center" style="font-size: 11pt" placeholder="Score" />
+                        <div class="d-flex justify-content-between">
+                          <button @click="actionScore('plus', 'number', 'min')" class="btn btn-sm btn-dark custom-rounded p-0 flex-grow-1 py-1 me-2 border border-secondary"><i class="mdi mdi-minus fw-bold"></i></button>
+                          <button @click="actionScore('plus', 'number', 'add')" class="btn btn-sm btn-warning custom-rounded p-0 flex-grow-1 py-1"><i class="mdi mdi-plus fw-bold"></i></button>
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <img src="@/assets/images/joker-card.png" class="mb-3" style="width: 100%;">
+                        <input type="number" v-model="formScore.plus.joker" @input="calculcateScore" class="form-control custom-rounded bg-dark border-secondary text-white mb-1 text-center" style="font-size: 11pt" placeholder="Score" />
+                        <div class="d-flex justify-content-between">
+                          <button @click="actionScore('plus', 'joker', 'min')" class="btn btn-sm btn-dark custom-rounded p-0 flex-grow-1 py-1 me-2 border border-secondary"><i class="mdi mdi-minus fw-bold"></i></button>
+                          <button @click="actionScore('plus', 'joker', 'add')" class="btn btn-sm btn-warning custom-rounded p-0 flex-grow-1 py-1"><i class="mdi mdi-plus fw-bold"></i></button>
+                        </div>
                       </div>
                     </div>
-                    <div class="col-md-3">
-                      <img src="@/assets/images/diamond-number-card.png" class="mb-3" style="width: 100%;">
-                      <input type="number" v-model="formScore.min.number" @input="calculcateScore" class="form-control custom-rounded bg-dark border-secondary text-white mb-1 text-center" style="font-size: 11pt" placeholder="Score" />
-                      <div class="d-flex justify-content-between">
-                        <button @click="actionScore('min', 'number', 'min')" class="btn btn-sm btn-dark custom-rounded p-0 flex-grow-1 py-1 me-2 border border-secondary"><i class="mdi mdi-minus fw-bold"></i></button>
-                        <button @click="actionScore('min', 'number', 'add')" class="btn btn-sm btn-warning custom-rounded p-0 flex-grow-1 py-1"><i class="mdi mdi-plus fw-bold"></i></button>
-                      </div>
-                    </div>
-                    <div class="col-md-3">
-                      <img src="@/assets/images/diamond-joker-card.png" class="mb-3" style="width: 100%;">
-                      <input type="number" v-model="formScore.min.joker" @input="calculcateScore" class="form-control custom-rounded bg-dark border-secondary text-white mb-1 text-center" style="font-size: 11pt" placeholder="Score" />
-                      <div class="d-flex justify-content-between">
-                        <button @click="actionScore('min', 'joker', 'min')" class="btn btn-sm btn-dark custom-rounded p-0 flex-grow-1 py-1 me-2 border border-secondary"><i class="mdi mdi-minus fw-bold"></i></button>
-                        <button @click="actionScore('min', 'joker', 'add')" class="btn btn-sm btn-warning custom-rounded p-0 flex-grow-1 py-1"><i class="mdi mdi-plus fw-bold"></i></button>
-                      </div>
-                    </div>
-                  </div>
-               </div>
-            </div>
-            <div class="col-md-6">
-               <div class="d-block bg-secondary p-3 custom-rounded">
-                  <div class="d-flex justify-content-between mb-3">
-                    <label class="form-label text-white mb-3 fw-bold">Nilai Plus</label>
-                    <button type="button" class="btn btn-sm btn-dark custom-rounded py-0" @click="resetTempScore('plus')" style="font-size: 10pt">Reset</button>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-3">
-                      <img src="@/assets/images/ace-card.png" class="mb-3" style="width: 100%;">
-                      <input type="number" v-model="formScore.plus.ace" @input="calculcateScore" class="form-control custom-rounded bg-dark border-secondary text-white mb-1 text-center" style="font-size: 11pt" placeholder="Score" />
-                      <div class="d-flex justify-content-between">
-                        <button @click="actionScore('plus', 'ace', 'min')" class="btn btn-sm btn-dark custom-rounded p-0 flex-grow-1 py-1 me-2 border border-secondary"><i class="mdi mdi-minus fw-bold"></i></button>
-                        <button @click="actionScore('plus', 'ace', 'add')" class="btn btn-sm btn-warning custom-rounded p-0 flex-grow-1 py-1"><i class="mdi mdi-plus fw-bold"></i></button>
-                      </div>
-                    </div>
-                    <div class="col-md-3">
-                      <img src="@/assets/images/king-card.png" class="mb-3" style="width: 100%;">
-                      <input type="number" v-model="formScore.plus.king" @input="calculcateScore" class="form-control custom-rounded bg-dark border-secondary text-white mb-1 text-center" style="font-size: 11pt" placeholder="Score" />
-                      <div class="d-flex justify-content-between">
-                        <button @click="actionScore('plus', 'king', 'min')" class="btn btn-sm btn-dark custom-rounded p-0 flex-grow-1 py-1 me-2 border border-secondary"><i class="mdi mdi-minus fw-bold"></i></button>
-                        <button @click="actionScore('plus', 'king', 'add')" class="btn btn-sm btn-warning custom-rounded p-0 flex-grow-1 py-1"><i class="mdi mdi-plus fw-bold"></i></button>
-                      </div>
-                    </div>
-                    <div class="col-md-3">
-                      <img src="@/assets/images/number-card.png" class="mb-3" style="width: 100%;">
-                      <input type="number" v-model="formScore.plus.number" @input="calculcateScore" class="form-control custom-rounded bg-dark border-secondary text-white mb-1 text-center" style="font-size: 11pt" placeholder="Score" />
-                      <div class="d-flex justify-content-between">
-                        <button @click="actionScore('plus', 'number', 'min')" class="btn btn-sm btn-dark custom-rounded p-0 flex-grow-1 py-1 me-2 border border-secondary"><i class="mdi mdi-minus fw-bold"></i></button>
-                        <button @click="actionScore('plus', 'number', 'add')" class="btn btn-sm btn-warning custom-rounded p-0 flex-grow-1 py-1"><i class="mdi mdi-plus fw-bold"></i></button>
-                      </div>
-                    </div>
-                    <div class="col-md-3">
-                      <img src="@/assets/images/joker-card.png" class="mb-3" style="width: 100%;">
-                      <input type="number" v-model="formScore.plus.joker" @input="calculcateScore" class="form-control custom-rounded bg-dark border-secondary text-white mb-1 text-center" style="font-size: 11pt" placeholder="Score" />
-                      <div class="d-flex justify-content-between">
-                        <button @click="actionScore('plus', 'joker', 'min')" class="btn btn-sm btn-dark custom-rounded p-0 flex-grow-1 py-1 me-2 border border-secondary"><i class="mdi mdi-minus fw-bold"></i></button>
-                        <button @click="actionScore('plus', 'joker', 'add')" class="btn btn-sm btn-warning custom-rounded p-0 flex-grow-1 py-1"><i class="mdi mdi-plus fw-bold"></i></button>
-                      </div>
-                    </div>
-                  </div>
-               </div>
+                 </div>
+              </div>
             </div>
           </div>
           <div class="form-group text-white mb-3">
