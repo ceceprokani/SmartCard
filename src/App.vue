@@ -100,8 +100,8 @@
       <div class="modal-content custom-rounded bg-dark">
         <div class="modal-header border-0">
           <div class="d-block">
-            <h6 class="modal-title text-white mb-2">{{ detailPlayer.name }}</h6>
-            <h5 class="text-white" id="formScoreLabel">Tambah Skor</h5>
+            <h6 class="text-white" id="formScoreLabel">Tambah Skor</h6>
+            <h5 class="modal-title text-white mb-2">{{ detailPlayer.name }}</h5>
           </div>
         </div>
         <div class="modal-body">
