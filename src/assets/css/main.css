@@ -66,10 +66,28 @@ input[type="number"] {
     display: block;
 }
 
+.wave {
+    position: absolute; left:0; bottom:0; top: 16px;
+}
+
 /* Tablet: untuk layar dengan lebar minimal 768px */
 @media (min-width: 768px) {
     .title-app {
         font-size: 24px
+    }
+}
+
+/* Tablet: untuk layar dengan lebar minimal 768px */
+@media (max-width: 300px) {
+    .wave {
+        position: absolute; left:0; bottom:0; top: 25px;
+    }
+}
+
+/* Tablet: untuk layar dengan lebar minimal 768px */
+@media (min-width: 400px) and (max-width: 450px) {
+    .wave {
+        position: absolute; left:0; bottom:0; top: 0;
     }
 }
 
@@ -80,5 +98,26 @@ input[type="number"] {
     }
     .title-app {
         font-size: 24px
+    }
+}
+
+/* Tablet: untuk layar dengan lebar minimal 768px */
+@media (min-width: 450px) and (max-width: 768px) {
+    .wave {
+        position: absolute; left:0; bottom:0; top: 0;
+    }
+}
+
+/* Tablet: untuk layar dengan lebar minimal 768px */
+@media (min-width: 768px) and (max-width: 988px) {
+    .wave {
+        position: absolute; left:0; bottom:0; top: 12px;
+    }
+}
+
+/* Tablet: untuk layar dengan lebar minimal 768px */
+@media (min-width: 988px) and (max-width: 1200px) {
+    .wave {
+        position: absolute; left:0; bottom:0; top: 2px;
     }
 }

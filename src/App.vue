@@ -16,14 +16,20 @@
     </div>
     <template v-else>
       <div class="row" v-if="listPlayer.length">
-        <div class="col-xl-3 mb-3" v-for="player, index in listPlayer" :key="index">
+        <div class="col-xl-3 col-md-6 mb-3" v-for="player, index in listPlayer" :key="index">
           <div :class="`card custom-rounded border-0 bg-secondary player ${getWinner.player?.id === player.id && 'win-effect'}`">
-            <div class="card-header custom-rounded-card-header bg-secondary" :class="{'bg-danger': allPoint(player) < 0, 'bg-warning': getWinner.player?.id === player.id}">
-              <div class="d-flex justify-content-between align-items-center py-2">
-                <i class="mdi mdi-crown flex-shrink-0 fs-2 fw-bold" style="filter: drop-shadow(0px 2px 4px rgba(255, 255, 255, 1));" v-if="getWinner.player?.id === player.id"></i>
-                <input type="text" v-model="player.name" class="form-control no-hover me-2 fs-3 border-0 bg-transparent px-0 fw-bold text-white" @blur="updatePlayer(player)" />
-                <div class="fs-3 fw-bold m-0 flex-shrink-0" :style="{'color': allPoint(player) < 0 ? 'white' : 'white'}">{{ allPoint(player) }} <span class="fs-6">pts</span></div>
-              </div>
+            <div class="card-header custom-rounded-card-header bg-secondary px-0 py-1" style="position: relative; height: 80px;" :class="{'bg-danger': allPoint(player) < 0, 'bg-warning': getWinner.player?.id === player.id}">
+                <div class="d-flex justify-content-between align-items-center py-2 px-3">
+                  <i class="mdi mdi-crown flex-shrink-0 fs-2 fw-bold" style="filter: drop-shadow(0px 2px 4px rgba(255, 255, 255, 1));" v-if="getWinner.player?.id === player.id"></i>
+                  <input type="text" v-model="player.name" class="form-control no-hover me-2 fs-3 border-0 bg-transparent px-0 fw-bold text-white" @blur="updatePlayer(player)" />
+                  <div class="fs-3 fw-bold m-0 flex-shrink-0" :style="{'color': allPoint(player) < 0 ? 'white' : 'white'}">{{ allPoint(player) }} <span class="fs-6">pts</span></div>
+                </div>
+                <client-only v-if="getWinner.player?.id === player.id">
+                  <Vue3Lottie
+                    class="wave"
+                    animationLink="https://lottie.host/ce0a43f9-c262-4a25-be62-390cc1549ba5/2beXKHhOHm.json"
+                  />
+                </client-only>
             </div>
             <div class="card-body">
               <template v-if="player.points.length">
