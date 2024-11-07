@@ -5,7 +5,10 @@
         <img src="@/assets/images/poker.png" class="me-3" style="width: 30px; height: 30px;">
         <div class="fw-bold title-app">REMI GAME</div>
       </div>
-      <button type="button" class="btn btn-warning custom-rounded fw-bold" data-bs-toggle="modal" data-bs-target="#addMember" @click="resetForm" v-if="listPlayer.length"><i class="mdi mdi-plus me-2"></i>ADD NEW PLAYER</button>
+      <div class="d-flex align-items-center text-warning">
+        <button type="button" class="btn btn-warning custom-rounded fw-bold" data-bs-toggle="modal" data-bs-target="#addMember" @click="resetForm" v-if="listPlayer.length"><i class="mdi mdi-plus me-2"></i>ADD NEW PLAYER</button>
+        <button type="button" class="btn btn-link ms-2" data-bs-toggle="modal" data-bs-target="#gameRules"><i class="mdi mdi-information"></i></button>
+      </div>
     </div>
     <div class="my-3">&nbsp;</div>
     <div v-if="fetching" class="d-flex align-items-center justify-content-center h-75">
@@ -228,6 +231,70 @@
       </div>
     </div>
   </div>
+
+  <!-- Modal for game rules -->
+  <div class="modal fade" id="gameRules" tabindex="-1" aria-labelledby="gameRulesLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content bg-dark">
+        <div class="modal-header border-0">
+          <h5 class="modal-title text-white" id="gameRulesLabel">PERATURAN PERMAINAN</h5>
+        </div>
+        <div class="modal-body">
+          <div class="form-group text-white mb-3">
+            <h5></h5>
+            <ol>
+              <li class="mb-3">Objektif</li>
+              <p>Dapatkan poin tertinggi pada setiap permainan</p>
+              <li>Ketentuan Permainan</li>
+              <p>
+                <ol type="a">
+                  <li>Terdiri dari 4 pemain</li>
+                  <li>Setiap pemain akan dibagikan 7 kartu</li>
+                  <li>Kartu yang dimainkan adalah kartu angka (2 - 10), kerajaan (jack, queen, king), dan ace. Setiap kartu memiliki poin, diantaranya:</li>
+                  <ol type="i">
+                    <li>Kartu angka bernilai 5 poin</li>
+                    <li>Kartu kerajaan bernilai 10 poin</li>
+                    <li>Kartu ace bernilai 15 poin</li>
+                  </ol>
+                  <li>Dalam setiap permainan, terdapat 1 kartu joker (diambil secara acak dari tumpukan kartu sisa). Kartu joker adalah kartu pamungkas yang memiliki poin fleksibel, diantaranya:</li>
+                  <ol type="i">
+                    <li>Jika dipasangkan dengan kartu 8 dan 9 wajik, maka bisa berperan sebagai kartu angka 10 atau 7 wajik dan bernilai 5 poin</li>
+                    <li>Jika dipasangkan dengan kartu jack dan king hati, maka bisa berperan sebagai kartu queen dan bernilai 10 poin</li>
+                    <li>Jika dipasangkan dengan kartu ace wajik dan ace hati, maka bisa berperan sebagai kartu ace keriting dan atau ace sekop dan bernilai 15 poin</li>
+                  </ol>
+                  <li>Untuk mendapatkan poin awal, setiap pemain harus memiliki kartu seri. Kartu seri adalah 3 atau lebih kartu berurutan dengan simbol yang sama, kecuali ace. Contoh:</li>
+                  <ol type="i">
+                    <li>Kartu 8, 9, 10 wajik</li>
+                    <li>Kartu jack, queen, king hati</li>
+                    <li>Kartu ace wajik, ace hati, ace keriting</li>
+                  </ol>
+                  <li>Jika sampai akhir putaran pemain tidak bisa mendapatkan kartu seri, maka akan mendapatkan nilai minus sesuai poin kartu</li>
+                  <li>Jika sampai akhir putaran pemain tidak bisa mendapatkan kartu seri dan memiliki kartu joker, maka akan mendapatkan nilai minus sesuai poin kartu ditambah minus kartu joker, diantaranya</li>
+                  <ol type="i">
+                    <li>Joker angka bernilai -50</li>
+                    <li>Joker kerajaan bernilai -100</li>
+                    <li>Joker ace bernilai -150</li>
+                  </ol>
+                </ol>
+              </p>
+              <li class="mb-3">Tata Cara Bermain</li>
+              <p>
+                Segera ...
+              </p>
+            </ol>
+          </div>
+          <div class="d-none form-group text-white">
+            <label class="form-label mb-2">Poin</label>
+            <input type="number" v-model="form.point" class="form-control custom-rounded bg-dark border-secondary text-white fs-6" placeholder="Enter point of player (optional)..." />
+          </div>
+        </div>
+        <div class="modal-footer border-0">
+          <button type="button" :disabled="fetching" ref="closeModal" class="btn btn-link text-white text-decoration-none custom-rounded" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </template>
 <script>
 import { max, findIndex } from 'lodash';
