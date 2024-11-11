@@ -1,13 +1,25 @@
 <template>
   <div class="container p-3 text-white vh-100">
     <div class="d-flex my-3 justify-content-between">
-      <div class="d-flex align-items-center text-warning">
-        <img src="@/assets/images/poker.png" class="me-3" style="width: 30px; height: 30px;">
+      <div class="d-flex align-items-center text-warning flex-shrink-0 me-3">
+        <img src="@/assets/images/playing-cards.png" class="me-3" style="width: 50px; height: 50px;">
         <div class="fw-bold title-app">REMI GAME</div>
       </div>
-      <div class="d-flex align-items-center text-warning">
-        <button type="button" class="btn btn-warning custom-rounded fw-bold" data-bs-toggle="modal" data-bs-target="#addMember" @click="resetForm" v-if="listPlayer.length"><i class="mdi mdi-plus me-2"></i>ADD NEW PLAYER</button>
-        <button type="button" class="btn btn-link ms-2" data-bs-toggle="modal" data-bs-target="#gameRules"><i class="mdi mdi-information"></i></button>
+      <div class="d-flex align-items-center">
+        <div class="mobile-hide">
+          <button type="button" class="btn btn-warning custom-rounded fw-bold" data-bs-toggle="modal" data-bs-target="#addMember" @click="resetForm" v-if="listPlayer.length"><i class="mdi mdi-plus me-2"></i>ADD NEW PLAYER</button>
+          <button type="button" class="btn btn-outline-warning custom-rounded ms-2" data-bs-toggle="modal" data-bs-target="#gameRules"><i class="mdi mdi-information"></i></button>
+        </div>
+        <div class="dropdown mobile-show">
+          <button class="btn btn-warning custom-rounded d-flex align-items-center justify-content-center" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="mdi mdi-dots-vertical fs-2 ml-1 p-0"></i>
+          </button>
+          <ul class="dropdown-menu custom-rounded" aria-labelledby="dropdownMenuButton">
+            <li><a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#addMember" @click="resetForm" >Add New Player</a></li>
+            <li><a class="dropdown-item" href="#">Action 2</a></li>
+            <li><a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#gameRules">Game Rules</a></li>
+          </ul>
+        </div>
       </div>
     </div>
     <div class="my-3">&nbsp;</div>
@@ -237,55 +249,62 @@
     <div class="modal-dialog modal-fullscreen">
       <div class="modal-content bg-dark">
         <div class="modal-header border-0">
-          <h5 class="modal-title text-white" id="gameRulesLabel">PERATURAN PERMAINAN</h5>
+          <div class="row w-100">
+            <div class="col-md-6 m-auto">
+              <h5 class="modal-title text-white" id="gameRulesLabel">PERATURAN PERMAINAN</h5>
+            </div>
+          </div>
         </div>
         <div class="modal-body">
-          <div class="form-group text-white mb-3">
-            <h5></h5>
-            <ol>
-              <li class="mb-3">Objektif</li>
-              <p>Dapatkan poin tertinggi pada setiap permainan</p>
-              <li>Ketentuan Permainan</li>
-              <p>
-                <ol type="a">
-                  <li>Terdiri dari 4 pemain</li>
-                  <li>Setiap pemain akan dibagikan 7 kartu</li>
-                  <li>Kartu yang dimainkan adalah kartu angka (2 - 10), kerajaan (jack, queen, king), dan ace. Setiap kartu memiliki poin, diantaranya:</li>
-                  <ol type="i">
-                    <li>Kartu angka bernilai 5 poin</li>
-                    <li>Kartu kerajaan bernilai 10 poin</li>
-                    <li>Kartu ace bernilai 15 poin</li>
-                  </ol>
-                  <li>Dalam setiap permainan, terdapat 1 kartu joker (diambil secara acak dari tumpukan kartu sisa). Kartu joker adalah kartu pamungkas yang memiliki poin fleksibel, diantaranya:</li>
-                  <ol type="i">
-                    <li>Jika dipasangkan dengan kartu 8 dan 9 wajik, maka bisa berperan sebagai kartu angka 10 atau 7 wajik dan bernilai 5 poin</li>
-                    <li>Jika dipasangkan dengan kartu jack dan king hati, maka bisa berperan sebagai kartu queen dan bernilai 10 poin</li>
-                    <li>Jika dipasangkan dengan kartu ace wajik dan ace hati, maka bisa berperan sebagai kartu ace keriting dan atau ace sekop dan bernilai 15 poin</li>
-                  </ol>
-                  <li>Untuk mendapatkan poin awal, setiap pemain harus memiliki kartu seri. Kartu seri adalah 3 atau lebih kartu berurutan dengan simbol yang sama, kecuali ace. Contoh:</li>
-                  <ol type="i">
-                    <li>Kartu 8, 9, 10 wajik</li>
-                    <li>Kartu jack, queen, king hati</li>
-                    <li>Kartu ace wajik, ace hati, ace keriting</li>
-                  </ol>
-                  <li>Jika sampai akhir putaran pemain tidak bisa mendapatkan kartu seri, maka akan mendapatkan nilai minus sesuai poin kartu</li>
-                  <li>Jika sampai akhir putaran pemain tidak bisa mendapatkan kartu seri dan memiliki kartu joker, maka akan mendapatkan nilai minus sesuai poin kartu ditambah minus kartu joker, diantaranya</li>
-                  <ol type="i">
-                    <li>Joker angka bernilai -50</li>
-                    <li>Joker kerajaan bernilai -100</li>
-                    <li>Joker ace bernilai -150</li>
-                  </ol>
+          <div class="row w-100">
+            <div class="col-md-6 m-auto">
+              <div class="form-group text-white mb-3" style="line-height: 35px; text-align: justify">
+                <ol>
+                  <li class="mb-3 text-warning fw-bold">
+                    <span>Objektif</span>
+                    <p class="text-white fw-normal">Dapatkan poin tertinggi pada setiap permainan</p>
+                  </li>
+                  <li class="mb-3 text-warning fw-bold">
+                    <span>Ketentuan Permainan</span>
+                    <ol type="a" class="text-white fw-normal">
+                      <li>Terdiri dari 4 pemain</li>
+                      <li>Setiap pemain akan dibagikan 7 kartu</li>
+                      <li>Kartu yang dimainkan adalah kartu angka (2 - 10), kerajaan (jack, queen, king), dan ace. Setiap kartu memiliki poin, diantaranya:</li>
+                      <ol type="i">
+                        <li>Kartu angka bernilai 5 poin</li>
+                        <li>Kartu kerajaan bernilai 10 poin</li>
+                        <li>Kartu ace bernilai 15 poin</li>
+                      </ol>
+                      <li>Dalam setiap permainan, terdapat 1 kartu joker (diambil secara acak dari tumpukan kartu sisa). Kartu joker adalah kartu pamungkas yang memiliki poin fleksibel, diantaranya:</li>
+                      <ol type="i">
+                        <li>Jika dipasangkan dengan kartu 8 dan 9 wajik, maka bisa berperan sebagai kartu angka 10 atau 7 wajik dan bernilai 5 poin</li>
+                        <li>Jika dipasangkan dengan kartu jack dan king hati, maka bisa berperan sebagai kartu queen dan bernilai 10 poin</li>
+                        <li>Jika dipasangkan dengan kartu ace wajik dan ace hati, maka bisa berperan sebagai kartu ace keriting dan atau ace sekop dan bernilai 15 poin</li>
+                      </ol>
+                      <li>Untuk mendapatkan poin awal, setiap pemain harus memiliki kartu seri. Kartu seri adalah 3 atau lebih kartu berurutan dengan simbol yang sama, kecuali ace. Contoh:</li>
+                      <ol type="i">
+                        <li>Kartu 8, 9, 10 wajik</li>
+                        <li>Kartu jack, queen, king hati</li>
+                        <li>Kartu ace wajik, ace hati, ace keriting</li>
+                      </ol>
+                      <li>Jika sampai akhir putaran pemain tidak bisa mendapatkan kartu seri, maka akan mendapatkan nilai minus sesuai poin kartu</li>
+                      <li>Jika sampai akhir putaran pemain tidak bisa mendapatkan kartu seri dan memiliki kartu joker, maka akan mendapatkan nilai minus sesuai poin kartu ditambah minus kartu joker, diantaranya</li>
+                      <ol type="i">
+                        <li>Joker angka bernilai -50</li>
+                        <li>Joker kerajaan bernilai -100</li>
+                        <li>Joker ace bernilai -150</li>
+                      </ol>
+                    </ol>
+                  </li>
+                  <li class="mb-3 text-warning fw-bold">
+                    <span>Tata Cara Bermain</span>
+                    <p class="text-white fw-normal">
+                      Segera ...
+                    </p>
+                  </li>
                 </ol>
-              </p>
-              <li class="mb-3">Tata Cara Bermain</li>
-              <p>
-                Segera ...
-              </p>
-            </ol>
-          </div>
-          <div class="d-none form-group text-white">
-            <label class="form-label mb-2">Poin</label>
-            <input type="number" v-model="form.point" class="form-control custom-rounded bg-dark border-secondary text-white fs-6" placeholder="Enter point of player (optional)..." />
+              </div>
+            </div>
           </div>
         </div>
         <div class="modal-footer border-0">

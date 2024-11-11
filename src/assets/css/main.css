@@ -39,6 +39,11 @@ body {
     height: 30px;
 }
 
+.btn-medium {
+    width: 45px;
+    height: 45px;
+}
+
 /* Untuk Chrome, Safari, Edge, dan Opera */
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
@@ -66,8 +71,17 @@ input[type="number"] {
     display: block;
 }
 
+
+.mobile-show {
+    display: none;
+}
+
 .wave {
     position: absolute; left:0; bottom:0; top: 16px;
+}
+
+.dropdown-toggle::after {
+    border: none;
 }
 
 /* Tablet: untuk layar dengan lebar minimal 768px */
@@ -95,6 +109,9 @@ input[type="number"] {
 @media (max-width: 768px) {
     .mobile-hide {
         display: none;
+    }
+    .mobile-show {
+        display: block;
     }
     .title-app {
         font-size: 24px
