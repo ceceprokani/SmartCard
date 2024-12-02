@@ -6,9 +6,15 @@
         <div class="fw-bold title-app">REMI GAME</div>
       </div>
       <div class="d-flex align-items-center">
-        <div class="mobile-hide">
-          <button type="button" class="btn btn-warning custom-rounded fw-bold" data-bs-toggle="modal" data-bs-target="#addMember" @click="resetForm" v-if="listPlayer.length"><i class="mdi mdi-plus me-2"></i>ADD NEW PLAYER</button>
-          <button type="button" class="btn btn-outline-warning custom-rounded ms-2" data-bs-toggle="modal" data-bs-target="#gameRules"><i class="mdi mdi-information"></i></button>
+        <button type="button" class="btn btn-warning custom-rounded fw-bold" data-bs-toggle="modal" data-bs-target="#addMember" @click="resetForm" v-if="listPlayer.length"><i class="mdi mdi-plus me-2"></i>ADD NEW PLAYER</button>
+        <div class="dropdown flex-shrink-1 mobile-hide">
+          <button type="button" class="btn btn-outline-warning custom-rounded ms-2" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"><i class="mdi mdi-dots-vertical ml-1 p-0"></i></button>
+          <ul class="dropdown-menu custom-rounded" aria-labelledby="dropdownMenuButton">
+            <li><a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#gameRules">Game Rules</a></li>
+            <div class="dropdown-divider"></div>
+            <li><a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmKickAllPlayer">Kick All Player</a></li>
+            <li><a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmRemoveAllScore">Reset All Score</a></li>
+          </ul>
         </div>
         <div class="dropdown mobile-show">
           <button class="btn btn-warning custom-rounded d-flex align-items-center justify-content-center" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
@@ -16,7 +22,6 @@
           </button>
           <ul class="dropdown-menu custom-rounded" aria-labelledby="dropdownMenuButton">
             <li><a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#addMember" @click="resetForm" >Add New Player</a></li>
-            <li><a class="dropdown-item" href="#">Action 2</a></li>
             <li><a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#gameRules">Game Rules</a></li>
           </ul>
         </div>
@@ -34,17 +39,18 @@
         <div class="col-xl-3 col-md-6 mb-3" v-for="player, index in listPlayer" :key="index">
           <div :class="`card custom-rounded border-0 bg-secondary player ${getWinner.player?.id === player.id && 'win-effect'}`">
             <div class="card-header custom-rounded-card-header bg-secondary px-0 py-1" style="position: relative; height: 80px;" :class="{'bg-danger': allPoint(player) < 0, 'bg-warning': getWinner.player?.id === player.id}">
-                <div class="d-flex justify-content-between align-items-center py-2 px-3">
-                  <i class="mdi mdi-crown flex-shrink-0 fs-2 fw-bold" style="filter: drop-shadow(0px 2px 4px rgba(255, 255, 255, 1));" v-if="getWinner.player?.id === player.id"></i>
-                  <input type="text" v-model="player.name" class="form-control no-hover me-2 fs-3 border-0 bg-transparent px-0 fw-bold text-white" @blur="updatePlayer(player)" />
-                  <div class="fs-3 fw-bold m-0 flex-shrink-0" :style="{'color': allPoint(player) < 0 ? 'white' : 'white'}">{{ allPoint(player) }} <span class="fs-6">pts</span></div>
-                </div>
-                <client-only v-if="getWinner.player?.id === player.id">
-                  <Vue3Lottie
-                    class="wave"
-                    animationLink="https://lottie.host/ce0a43f9-c262-4a25-be62-390cc1549ba5/2beXKHhOHm.json"
-                  />
-                </client-only>
+              <client-only v-if="getWinner.player?.id === player.id">
+                <Vue3Lottie
+                  style="position: absolute; z-index: 1; width: 100%"
+                  class="wave"
+                  animationLink="https://lottie.host/ce0a43f9-c262-4a25-be62-390cc1549ba5/2beXKHhOHm.json"
+                />
+              </client-only>  
+              <div class="d-flex justify-content-between align-items-center py-2 px-3" style="z-index: 2; position: absolute">
+                <i class="mdi mdi-crown flex-shrink-0 fs-2 fw-bold" style="filter: drop-shadow(0px 2px 4px rgba(255, 255, 255, 1));" v-if="getWinner.player?.id === player.id"></i>
+                <input type="text" v-model="player.name" class="form-control no-hover me-2 fs-3 border-0 bg-transparent px-0 fw-bold text-white" @blur="updatePlayer(player)" />
+                <div class="fs-3 fw-bold m-0 flex-shrink-0" :style="{'color': allPoint(player) < 0 ? 'white' : 'white'}">{{ allPoint(player) }} <span class="fs-6">pts</span></div>
+              </div>
             </div>
             <div class="card-body">
               <template v-if="player.points.length">
@@ -101,7 +107,7 @@
         <div class="modal-body">
           <div class="form-group text-white mb-3">
             <label class="form-label mb-2">Nama Pemain</label>
-            <input type="text" v-model="form.name" class="form-control custom-rounded bg-dark border-secondary text-white fs-6" placeholder="Enter name of player..." />
+            <input type="text" v-model="form.name" class="form-control custom-rounded bg-dark border-secondary text-white fs-6" placeholder="Enter name of player..." @keydown.enter="saveMember" />
           </div>
           <div class="d-none form-group text-white">
             <label class="form-label mb-2">Poin</label>
@@ -308,7 +314,7 @@
           </div>
         </div>
         <div class="modal-footer border-0">
-          <button type="button" :disabled="fetching" ref="closeModal" class="btn btn-link text-white text-decoration-none custom-rounded" data-bs-dismiss="modal">Close</button>
+          <button type="button" :disabled="fetching" class="btn btn-link text-white text-decoration-none custom-rounded" data-bs-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
@@ -316,7 +322,7 @@
 
 </template>
 <script>
-import { max, findIndex } from 'lodash';
+import { max, findIndex, map } from 'lodash';
 
 import { db } from '@/utils/firebase';
 import { doc, setDoc, getDocs, addDoc, collection, where, deleteDoc, query, orderBy } from "firebase/firestore";
@@ -492,6 +498,25 @@ export default {
         this.fetchData()
       }, 100);
     },
+    async kickAllPlayer() {
+      if (this.listPlayer.length) {
+        this.fetching = true
+
+        const playerSnapshot = await getDocs(collection(db, "player"));
+        const deletePromises = playerSnapshot.docs.map((document) => deleteDoc(doc(db, "player", document.id)));
+        await Promise.all(deletePromises);
+
+        this.resetAllScore()
+
+        this.fetching = false
+        setTimeout(() => {
+          this.$refs.closeModalConfirm.click()
+          this.fetchData()
+        }, 100);
+      } else {
+        alert('Not a current player!')
+      }
+    },
     async removeScore(id) {
       this.fetching = true
       try {
@@ -524,6 +549,27 @@ export default {
         this.$refs.closeModalConfirm.click()
         this.fetchData()
       }, 100);
+    },
+    async resetAllScore() {
+      if (this.listPlayer.length) {
+        this.fetching = true
+        
+        const buildQuery = query(collection(db, "score"),
+          where("userId", "in", map(this.listPlayer, 'id')),
+        );
+
+        const scoreSnapshot = await getDocs(buildQuery);
+        const deletePromises = scoreSnapshot.docs.map((document) => deleteDoc(doc(db, "score", document.id)));
+        await Promise.all(deletePromises);
+
+        this.fetching = false
+        setTimeout(() => {
+          this.$refs.closeModalConfirm.click()
+          this.fetchData()
+        }, 100);
+      } else {
+        alert('Not a current player!')
+      }
     },
     async saveScore(userId, score, id=null) {
       this.fetching = true
@@ -596,10 +642,19 @@ export default {
     },
     confirmKickPlayer(data) {
       this.confirmMessage = {
-        title: 'Kick Pemain',
+        title: 'Kick Player',
         message: `Apakah kamu yakin akan mengeluarkan pemain dengan Nama <span class="text-decoration-underline fw-bold fs-5">${data.name}</span> ?`,
         action: 'kick-player',
         action_title: 'Kick This Player'
+      }
+      this.detailPlayer = data
+    },
+    confirmKickAllPlayer(data) {
+      this.confirmMessage = {
+        title: 'Kick All Player',
+        message: `Apakah kamu yakin akan mengeluarkan semua pemain ? <br/> Aksi ini termasuk mereset semua skor pada pemain`,
+        action: 'kick-all-player',
+        action_title: 'Kick All Player'
       }
       this.detailPlayer = data
     },
@@ -621,16 +676,30 @@ export default {
       }
       this.detailScore = score
     },
+    confirmRemoveAllScore() {
+      this.confirmMessage = {
+        title: 'Reset All Score',
+        message: `Apakah kamu yakin akan menghapus semua skor pada permainan ?`,
+        action: 'reset-all-score',
+        action_title: 'Reset All Score'
+      }
+    },
     actionConfirm(action) {
       switch (action) {
         case 'kick-player':
           this.kickPlayer(this.detailPlayer.id)
+          break;
+        case 'kick-all-player':
+          this.kickAllPlayer(this.detailPlayer.id)
           break;
         case 'remove-score':
           this.removeScore(this.detailScore.id)
           break;
         case 'reset-score':
           this.resetScore(this.detailPlayer.id)
+          break;
+        case 'reset-all-score':
+          this.resetAllScore()
           break;
         default:
           break;
