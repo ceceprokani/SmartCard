@@ -73,7 +73,7 @@
                       <div class="border-start" style="border-color: #404040 !important;">&nbsp;</div>
                       <div class="fw-bold text-capitalize ms-3" style="font-size: 10pt" :style="{'color': index > 0 ? '#909090' : '#ffffff'}">{{ item.type }}</div>
                     </div>
-                    <div class="fw-bold me-3" :class="{'fs-3': index == 0, 'fs-4': index > 0}" :style="{'color': item.type.toLowerCase() == '-' ? 'white' : item.type.toLowerCase() == 'plus' ? (index == 0 ? '#F3C623' : '#f0d36a') : (index == 0 ? '#F05A7E' : '#f690a8')}">
+                    <div class="fw-bold me-3" :class="{'fs-3': index == 0, 'fs-4': index > 0}" :style="{'color': item.type.toLowerCase() == '-' ? 'white' : item.type.toLowerCase() == 'plus' ? (index == 0 ? '#F3C623' : '#b19d53') : (index == 0 ? '#F05A7E' : '#c16b7f')}">
                       <i class="mdi mdi-arrow-top-right" v-if="item.type.toLowerCase() == 'plus'"></i>
                       <i class="mdi mdi-arrow-bottom-left" v-if="item.type.toLowerCase() == 'minus'"></i>
                       {{ item.score }}</div>
