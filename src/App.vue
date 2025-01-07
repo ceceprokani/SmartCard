@@ -67,13 +67,13 @@
             <div class="card-body">
               <template v-if="player.points.length">
                 <template v-for="item, index in player.points">
-                  <div class="d-flex custom-rounded justify-content-between align-items-center border-dark mb-2" :class="{'bg-dark': index == 0, 'bg-dark-smooth': index > 0}" :key="item.id" v-if="index <= player.limit - 1">
+                  <div class="d-flex custom-rounded justify-content-between align-items-center border-dark mb-2" :class="{'bg-dark py-2': index == 0, 'bg-dark-smooth': index > 0}" :key="item.id" v-if="index <= player.limit - 1">
                     <div class="d-flex p-0 align-items-center">
                       <button type="button" class="btn btn-link btn-small btn-circle ms-2 p-0 m-2" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmRemoveScore(item)"><i class="mdi mdi-trash-can text-secondary"></i></button>
                       <div class="border-start" style="border-color: #404040 !important;">&nbsp;</div>
                       <div class="fw-bold text-capitalize ms-3" style="font-size: 10pt" :style="{'color': index > 0 ? '#909090' : '#ffffff'}">{{ item.type }}</div>
                     </div>
-                    <div class="fs-4 fw-bold me-3" :style="{'color': index > 0 ? '#909090' : item.type.toLowerCase() == '-' ? 'white' : item.type.toLowerCase() == 'plus' ? '#F3C623' : '#F05A7E'}">
+                    <div class="fw-bold me-3" :class="{'fs-3': index == 0, 'fs-4': index > 0}" :style="{'color': item.type.toLowerCase() == '-' ? 'white' : item.type.toLowerCase() == 'plus' ? (index == 0 ? '#F3C623' : '#f0d36a') : (index == 0 ? '#F05A7E' : '#f690a8')}">
                       <i class="mdi mdi-arrow-top-right" v-if="item.type.toLowerCase() == 'plus'"></i>
                       <i class="mdi mdi-arrow-bottom-left" v-if="item.type.toLowerCase() == 'minus'"></i>
                       {{ item.score }}</div>
