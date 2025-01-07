@@ -74,8 +74,8 @@
                       <div class="fw-bold text-capitalize ms-3" style="font-size: 10pt" :style="{'color': index > 0 ? '#909090' : '#ffffff'}">{{ item.type }}</div>
                     </div>
                     <div class="fs-4 fw-bold me-3" :style="{'color': index > 0 ? '#909090' : item.type.toLowerCase() == '-' ? 'white' : item.type.toLowerCase() == 'plus' ? '#F3C623' : '#F05A7E'}">
-                      <i class="mdi mdi-arrow-top-right" style="color: #F3C623" v-if="item.type.toLowerCase() == 'plus'"></i>
-                      <i class="mdi mdi-arrow-bottom-left" style="color: #F05A7E" v-if="item.type.toLowerCase() == 'minus'"></i>
+                      <i class="mdi mdi-arrow-top-right" v-if="item.type.toLowerCase() == 'plus'"></i>
+                      <i class="mdi mdi-arrow-bottom-left" v-if="item.type.toLowerCase() == 'minus'"></i>
                       {{ item.score }}</div>
                   </div>
                 </template>
