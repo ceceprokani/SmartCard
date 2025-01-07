@@ -9,23 +9,23 @@
         <button type="button" class="btn btn-warning custom-rounded fw-bold mobile-hide" data-bs-toggle="modal" data-bs-target="#addMember" @click="resetForm" v-if="listPlayer.length"><i class="mdi mdi-plus me-2"></i>ADD NEW PLAYER</button>
         <div class="dropdown flex-shrink-1 mobile-hide">
           <button type="button" class="btn btn-outline-warning custom-rounded ms-2" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"><i class="mdi mdi-dots-vertical ml-1 p-0"></i></button>
-          <ul class="dropdown-menu custom-rounded" aria-labelledby="dropdownMenuButton">
-            <li><a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#gameRules">Game Rules</a></li>
+          <ul class="dropdown-menu custom-rounded bg-secondary" aria-labelledby="dropdownMenuButton">
+            <li><a class="dropdown-item text-white" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#gameRules">Game Rules</a></li>
             <div class="dropdown-divider"></div>
-            <li><a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmKickAllPlayer">Kick All Player</a></li>
-            <li><a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmRemoveAllScore">Reset All Score</a></li>
+            <li><a class="dropdown-item text-white" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmKickAllPlayer">Kick All Player</a></li>
+            <li><a class="dropdown-item text-white" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmRemoveAllScore">Reset All Score</a></li>
           </ul>
         </div>
         <div class="dropdown mobile-show">
           <button class="btn btn-warning custom-rounded d-flex align-items-center justify-content-center" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="mdi mdi-dots-vertical fs-2 ml-1 p-0"></i>
           </button>
-          <ul class="dropdown-menu custom-rounded" aria-labelledby="dropdownMenuButton">
-            <li><a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#addMember" @click="resetForm" >Add New Player</a></li>
-            <li><a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#gameRules">Game Rules</a></li>
+          <ul class="dropdown-menu custom-rounded bg-secondary" aria-labelledby="dropdownMenuButton">
+            <li><a class="dropdown-item text-white" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#addMember" @click="resetForm" >Add New Player</a></li>
+            <li><a class="dropdown-item text-white" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#gameRules">Game Rules</a></li>
             <div class="dropdown-divider"></div>
-            <li><a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmKickAllPlayer">Kick All Player</a></li>
-            <li><a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmRemoveAllScore">Reset All Score</a></li>
+            <li><a class="dropdown-item text-white" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmKickAllPlayer">Kick All Player</a></li>
+            <li><a class="dropdown-item text-white" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmRemoveAllScore">Reset All Score</a></li>
           </ul>
         </div>
       </div>
@@ -53,13 +53,13 @@
                 <i class="mdi mdi-crown flex-shrink-0 fs-2 fw-bold" style="filter: drop-shadow(0px 2px 4px rgba(255, 255, 255, 1));" v-if="getWinner.player?.id === player.id"></i>
                 <input type="text" v-model="player.name" class="form-control no-hover me-2 fs-3 border-0 bg-transparent px-0 fw-bold text-white" @blur="updatePlayer(player)" />
                 <div class="fs-3 fw-bold m-0 flex-shrink-0" :style="{'color': allPoint(player) < 0 ? 'white' : 'white'}">{{ allPoint(player) }} <span class="fs-6">pts</span></div>
-                <div class="dropdown flex-shrink-1 ms-3">
+                <div class="dropdown flex-shrink-1 ms-3 mobile-show">
                   <button type="button" class="btn btn-link p-0 custom-rounded text-white" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"><i class="mdi mdi-dots-vertical fs-3 p-0"></i></button>
-                  <ul class="dropdown-menu custom-rounded" aria-labelledby="dropdownMenuButton">
-                    <li><a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#formScore" @click="openFormScore(player)">Add Score</a></li>
-                    <div class="dropdown-divider"></div>
-                    <li v-if="player.points.length"><a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmResetScore(player)">Reset Score</a></li>
-                    <li><a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmKickPlayer(player)">Kick Player</a></li>
+                  <ul class="dropdown-menu custom-rounded bg-secondary shadow" aria-labelledby="dropdownMenuButton">
+                    <li><a class="dropdown-item text-white" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#formScore" @click="openFormScore(player)">Add Score</a></li>
+                    <div class="dropdown-divider bg-secondary"></div>
+                    <li v-if="player.points.length"><a class="dropdown-item text-white" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmResetScore(player)">Reset Score</a></li>
+                    <li><a class="dropdown-item text-white" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmKickPlayer(player)">Kick Player</a></li>
                   </ul>
                 </div>
               </div>
@@ -88,17 +88,19 @@
                 Belum ada score yang masuk saat ini
               </div>
             </div>
-            <div class="card-footer mobile-hide">
-              <div class="d-none d-flex justify-content-between py-2">
-                <input type="number" class="form-control custom-rounded bg-dark border-secondary text-white fs-6" placeholder="Enter point..." v-model="player.score" />
-                <button type="button" class="btn btn-dark custom-rounded fw-bold ms-2" v-if="player.score" @click="saveScore(player.id, player.score)">ADD</button>
-              </div>
-              <div class="d-grid pt-2 mb-2">
-                <button type="button" class="btn btn-warning custom-rounded fw-bold show-hover" data-bs-toggle="modal" data-bs-target="#formScore" @click="openFormScore(player)">ADD SCORE</button>
-              </div>
-              <div class="d-flex justify-content-between mb-2">
-                <button v-if="player.points.length" type="button" class="btn btn-secondary text-dark custom-rounded fw-bold show-hover" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmResetScore(player)">RESET SCORE</button>
-                <button type="button" class="btn btn-secondary text-dark custom-rounded fw-bold show-hover" :class="{'w-100': !player.points.length}" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmKickPlayer(player)">KICK PLAYER</button>
+            <div class="card-footer show-hover">
+              <div class="mobile-hide">
+                <div class="d-none d-flex justify-content-between py-2">
+                  <input type="number" class="form-control custom-rounded bg-dark border-secondary text-white fs-6" placeholder="Enter point..." v-model="player.score" />
+                  <button type="button" class="btn btn-dark custom-rounded fw-bold ms-2" v-if="player.score" @click="saveScore(player.id, player.score)">ADD</button>
+                </div>
+                <div class="d-grid pt-2 mb-2">
+                  <button type="button" class="btn btn-warning custom-rounded fw-bold show-hover" data-bs-toggle="modal" data-bs-target="#formScore" @click="openFormScore(player)">ADD SCORE</button>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                  <button v-if="player.points.length" type="button" class="btn btn-secondary text-dark custom-rounded fw-bold show-hover" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmResetScore(player)">RESET SCORE</button>
+                  <button type="button" class="btn btn-secondary text-dark custom-rounded fw-bold show-hover" :class="{'w-100': !player.points.length}" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmKickPlayer(player)">KICK PLAYER</button>
+                </div>
               </div>
             </div>
           </div>
@@ -240,7 +242,7 @@
           </div>
           <div class="form-group text-white mb-3">
             <label class="form-label mb-2">Total Nilai</label>
-            <input type="number" v-model="formScore.total" class="form-control custom-rounded bg-dark border-secondary text-white fs-6" placeholder="Enter total of score ..." />
+            <input type="number" v-model="formScore.total" class="form-control custom-rounded bg-dark border-secondary text-white fs-6" placeholder="Enter total of score ..." @keydown.enter="saveScore(detailPlayer.id, formScore.total)" />
           </div>
         </div>
         <div class="modal-footer border-0">
@@ -446,7 +448,7 @@ export default {
                         score: parseInt(dataScore.score.toString().replace('-', ''))
                       }))
                       .filter((score) => score.userId === player.id)
-                      .sort((a, b) => a.createdAt - b.createdAt);
+                      .sort((a, b) => b.createdAt - a.createdAt);
           return {
             ...player,
             points: score,
