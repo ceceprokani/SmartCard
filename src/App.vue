@@ -67,20 +67,20 @@
             <div class="card-body">
               <template v-if="player.points.length">
                 <template v-for="item, index in player.points">
-                  <div class="d-flex custom-rounded bg-dark justify-content-between align-items-center border-dark mb-2" :key="item.id" v-if="index <= player.limit - 1">
+                  <div class="d-flex custom-rounded justify-content-between align-items-center border-dark mb-2" :class="{'bg-dark': index == 0, 'bg-dark-smooth': index > 0}" :key="item.id" v-if="index <= player.limit - 1">
                     <div class="d-flex p-0 align-items-center">
                       <button type="button" class="btn btn-link btn-small btn-circle ms-2 p-0 m-2" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmRemoveScore(item)"><i class="mdi mdi-trash-can text-secondary"></i></button>
                       <div class="border-start" style="border-color: #404040 !important;">&nbsp;</div>
-                      <div class="fw-bold text-capitalize ms-3" style="font-size: 10pt">{{ item.type }}</div>
+                      <div class="fw-bold text-capitalize ms-3" style="font-size: 10pt" :style="{'color': index > 0 ? '#909090' : '#ffffff'}">{{ item.type }}</div>
                     </div>
-                    <div class="fs-4 fw-bold me-3" :style="{'color': item.type.toLowerCase() == '-' ? 'white' : item.type.toLowerCase() == 'plus' ? '#F3C623' : '#F05A7E'}">
-                      <i class="mdi mdi-arrow-top-right" v-if="item.type.toLowerCase() == 'plus'"></i>
-                      <i class="mdi mdi-arrow-bottom-left" v-if="item.type.toLowerCase() == 'minus'"></i>
+                    <div class="fs-4 fw-bold me-3" :style="{'color': index > 0 ? '#909090' : item.type.toLowerCase() == '-' ? 'white' : item.type.toLowerCase() == 'plus' ? '#F3C623' : '#F05A7E'}">
+                      <i class="mdi mdi-arrow-top-right" style="color: #F3C623" v-if="item.type.toLowerCase() == 'plus'"></i>
+                      <i class="mdi mdi-arrow-bottom-left" style="color: #F05A7E" v-if="item.type.toLowerCase() == 'minus'"></i>
                       {{ item.score }}</div>
                   </div>
                 </template>
-                <div class="d-flex justify-content-center mt-3" v-if="player.points.length > 2">
-                  <button class="btn btn-secondary text-dark custom-rounded fw-bold" @click="player.limit = 2" v-if="player.limit == player.points.length">Minimize</button>
+                <div class="d-flex justify-content-center mt-3" v-if="player.points.length > (isMobile ? 2 : 6)">
+                  <button class="btn btn-secondary text-dark custom-rounded fw-bold" @click="player.limit = isMobile ? 2 : 6" v-if="player.limit == player.points.length">Minimize</button>
                   <button class="btn btn-secondary text-dark custom-rounded fw-bold" @click="player.limit = player.points.length" v-else>See More</button>
                 </div>
               </template>
@@ -350,6 +350,7 @@ import { doc, setDoc, getDocs, addDoc, collection, where, deleteDoc, query, orde
 export default {
   data() {
     return {
+      isMobile: false,
       listPlayer: [],
       form: {
         name: '',
@@ -416,6 +417,7 @@ export default {
     }
   },
   mounted() {
+    this.isMobile = window.matchMedia("(max-width: 768px)").matches;
     this.fetchData()
   },
   methods: {
@@ -452,7 +454,7 @@ export default {
           return {
             ...player,
             points: score,
-            limit: 2
+            limit: this.isMobile ? 2 : 6
           };
         });
 

@@ -1,3 +1,6 @@
+.bg-dark-smooth {
+  background-color: #2b3036;
+}
 .win-effect {
     position: relative;
     animation: shadowPulse 1s linear infinite;
