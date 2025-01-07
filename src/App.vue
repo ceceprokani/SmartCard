@@ -6,7 +6,7 @@
         <div class="fw-bold title-app">REMI GAME</div>
       </div>
       <div class="d-flex align-items-center">
-        <button type="button" class="btn btn-warning custom-rounded fw-bold" data-bs-toggle="modal" data-bs-target="#addMember" @click="resetForm" v-if="listPlayer.length"><i class="mdi mdi-plus me-2"></i>ADD NEW PLAYER</button>
+        <button type="button" class="btn btn-warning custom-rounded fw-bold mobile-hide" data-bs-toggle="modal" data-bs-target="#addMember" @click="resetForm" v-if="listPlayer.length"><i class="mdi mdi-plus me-2"></i>ADD NEW PLAYER</button>
         <div class="dropdown flex-shrink-1 mobile-hide">
           <button type="button" class="btn btn-outline-warning custom-rounded ms-2" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"><i class="mdi mdi-dots-vertical ml-1 p-0"></i></button>
           <ul class="dropdown-menu custom-rounded" aria-labelledby="dropdownMenuButton">
@@ -23,6 +23,9 @@
           <ul class="dropdown-menu custom-rounded" aria-labelledby="dropdownMenuButton">
             <li><a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#addMember" @click="resetForm" >Add New Player</a></li>
             <li><a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#gameRules">Game Rules</a></li>
+            <div class="dropdown-divider"></div>
+            <li><a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmKickAllPlayer">Kick All Player</a></li>
+            <li><a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmRemoveAllScore">Reset All Score</a></li>
           </ul>
         </div>
       </div>
@@ -46,31 +49,46 @@
                   animationLink="https://lottie.host/ce0a43f9-c262-4a25-be62-390cc1549ba5/2beXKHhOHm.json"
                 />
               </client-only>  
-              <div class="d-flex justify-content-between align-items-center py-2 px-3" style="z-index: 2; position: absolute">
+              <div class="d-flex justify-content-between align-items-center py-2 px-3" style="z-index: 2; position: absolute; right: 0; left: 0">
                 <i class="mdi mdi-crown flex-shrink-0 fs-2 fw-bold" style="filter: drop-shadow(0px 2px 4px rgba(255, 255, 255, 1));" v-if="getWinner.player?.id === player.id"></i>
                 <input type="text" v-model="player.name" class="form-control no-hover me-2 fs-3 border-0 bg-transparent px-0 fw-bold text-white" @blur="updatePlayer(player)" />
                 <div class="fs-3 fw-bold m-0 flex-shrink-0" :style="{'color': allPoint(player) < 0 ? 'white' : 'white'}">{{ allPoint(player) }} <span class="fs-6">pts</span></div>
+                <div class="dropdown flex-shrink-1 ms-3">
+                  <button type="button" class="btn btn-link p-0 custom-rounded text-white" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"><i class="mdi mdi-dots-vertical fs-3 p-0"></i></button>
+                  <ul class="dropdown-menu custom-rounded" aria-labelledby="dropdownMenuButton">
+                    <li><a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#formScore" @click="openFormScore(player)">Add Score</a></li>
+                    <div class="dropdown-divider"></div>
+                    <li v-if="player.points.length"><a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmResetScore(player)">Reset Score</a></li>
+                    <li><a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmKickPlayer(player)">Kick Player</a></li>
+                  </ul>
+                </div>
               </div>
             </div>
             <div class="card-body">
               <template v-if="player.points.length">
-                <div class="d-flex custom-rounded bg-dark justify-content-between align-items-center border-dark mb-2" v-for="item in player.points" :key="item.id">
-                  <div class="d-flex p-0 align-items-center">
-                    <button type="button" class="btn btn-link btn-small btn-circle ms-2 p-0 m-2" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmRemoveScore(item)"><i class="mdi mdi-trash-can text-secondary"></i></button>
-                    <div class="border-start" style="border-color: #404040 !important;">&nbsp;</div>
-                    <div class="fw-bold text-capitalize ms-3" style="font-size: 10pt">{{ item.type }}</div>
+                <template v-for="item, index in player.points">
+                  <div class="d-flex custom-rounded bg-dark justify-content-between align-items-center border-dark mb-2" :key="item.id" v-if="index <= player.limit - 1">
+                    <div class="d-flex p-0 align-items-center">
+                      <button type="button" class="btn btn-link btn-small btn-circle ms-2 p-0 m-2" data-bs-toggle="modal" data-bs-target="#confirm" @click="confirmRemoveScore(item)"><i class="mdi mdi-trash-can text-secondary"></i></button>
+                      <div class="border-start" style="border-color: #404040 !important;">&nbsp;</div>
+                      <div class="fw-bold text-capitalize ms-3" style="font-size: 10pt">{{ item.type }}</div>
+                    </div>
+                    <div class="fs-4 fw-bold me-3" :style="{'color': item.type.toLowerCase() == '-' ? 'white' : item.type.toLowerCase() == 'plus' ? '#F3C623' : '#F05A7E'}">
+                      <i class="mdi mdi-arrow-top-right" v-if="item.type.toLowerCase() == 'plus'"></i>
+                      <i class="mdi mdi-arrow-bottom-left" v-if="item.type.toLowerCase() == 'minus'"></i>
+                      {{ item.score }}</div>
                   </div>
-                  <div class="fs-4 fw-bold me-3" :style="{'color': item.type.toLowerCase() == '-' ? 'white' : item.type.toLowerCase() == 'plus' ? '#F3C623' : '#F05A7E'}">
-                    <i class="mdi mdi-arrow-top-right" v-if="item.type.toLowerCase() == 'plus'"></i>
-                    <i class="mdi mdi-arrow-bottom-left" v-if="item.type.toLowerCase() == 'minus'"></i>
-                    {{ item.score }}</div>
+                </template>
+                <div class="d-flex justify-content-center mt-3" v-if="player.points.length > 2">
+                  <button class="btn btn-secondary text-dark custom-rounded fw-bold" @click="player.limit = 2" v-if="player.limit == player.points.length">Minimize</button>
+                  <button class="btn btn-secondary text-dark custom-rounded fw-bold" @click="player.limit = player.points.length" v-else>See More</button>
                 </div>
               </template>
               <div v-else class="text-dark py-3" style="font-size:14px">
                 Belum ada score yang masuk saat ini
               </div>
             </div>
-            <div class="card-footer">
+            <div class="card-footer mobile-hide">
               <div class="d-none d-flex justify-content-between py-2">
                 <input type="number" class="form-control custom-rounded bg-dark border-secondary text-white fs-6" placeholder="Enter point..." v-model="player.score" />
                 <button type="button" class="btn btn-dark custom-rounded fw-bold ms-2" v-if="player.score" @click="saveScore(player.id, player.score)">ADD</button>
@@ -431,7 +449,8 @@ export default {
                       .sort((a, b) => a.createdAt - b.createdAt);
           return {
             ...player,
-            points: score
+            points: score,
+            limit: 2
           };
         });
 
