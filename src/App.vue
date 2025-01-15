@@ -422,7 +422,7 @@ export default {
     this.fetchData(true)
     setInterval(() => {
       this.fetchData()
-    }, 500);
+    }, 1000);
   },
   methods: {
     async fetchData(reload=false) {
