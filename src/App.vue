@@ -418,13 +418,21 @@ export default {
   },
   mounted() {
     this.isMobile = window.matchMedia("(max-width: 768px)").matches;
-    this.fetchData()
+
+    this.fetchData(true)
+    setInterval(() => {
+      this.fetchData()
+    }, 500);
   },
   methods: {
-    async fetchData() {
+    async fetchData(reload=false) {
       try {
-        this.fetching = true
-        this.listPlayer = []
+        this.fetching = reload
+
+        if (reload) {
+          this.listPlayer = []
+        }
+
         let tmpAllPlayer = []
 
         // get data player
